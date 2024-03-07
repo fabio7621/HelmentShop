@@ -6,6 +6,4 @@
 export default {};
 </script>
 
-<style style="scss">
-@import "./assets/scss/all";
-</style>
+<style></style>
