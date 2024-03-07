@@ -19,7 +19,7 @@ const router = createRouter({
 					component: () => import("../views/FrontView/AboutView.vue"),
 				},
 				{
-					path: "/product",
+					path: "/product:id",
 					name: "product",
 					component: () => import("../views/FrontView/ProductView.vue"),
 				},
