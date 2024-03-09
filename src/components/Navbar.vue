@@ -72,12 +72,12 @@
 							>
 						</li>
 						<li class="nav-item top-navbar-item d-flex flex-column text-center">
-							<a
+							<router-link
 								class="nav-link top-navbar-txt position-relative"
-								href="./shopcart.html"
+								to="/checkout"
 								>購物車<br />
 								<span style="color: red">カート(20)</span>
-							</a>
+							</router-link>
 						</li>
 						<li class="nav-item top-navbar-item d-flex flex-column text-center">
 							<a class="nav-link top-navbar-txt" href="./shopcart.html"
