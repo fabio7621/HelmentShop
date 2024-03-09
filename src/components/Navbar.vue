@@ -33,8 +33,7 @@
 							</router-link>
 						</li>
 						<li class="nav-item dropdown">
-							<router-link
-								to="/products"
+							<a
 								class="nav-link top-navbar-item d-flex flex-column text-center dropdown-toggle"
 								role="button"
 								data-bs-toggle="dropdown"
@@ -42,8 +41,8 @@
 							>
 								產品介紹<br />
 								<span>製品紹介</span>
-							</router-link>
-							<!-- <ul class="dropdown-menu">
+							</a>
+							<ul class="dropdown-menu">
 								<li>
 									<a class="drop-item dropdown-item" href="#">全部製品</a>
 								</li>
@@ -56,7 +55,7 @@
 								<li>
 									<a class="drop-item dropdown-item" href="#">OGK</a>
 								</li>
-							</ul> -->
+							</ul>
 						</li>
 						<li class="nav-item top-navbar-item">
 							<router-link

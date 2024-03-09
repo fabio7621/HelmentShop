@@ -1,5 +1,7 @@
-@import "./reset.css";
+@import "bootstrap/scss/functions";
 @import "bootstrap/scss/bootstrap";
+//main css
+@import "./reset.css";
 @import "./index";
 @import "./checkout";
 @import "./product";
