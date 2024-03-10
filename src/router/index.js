@@ -54,6 +54,29 @@ const router = createRouter({
 			name: "login",
 			component: () => import("../views/loginView.vue"),
 		},
+		{
+			path: "/dashbord",
+			name: "dashbord",
+			component: () => import("../views/DashBordView/AdminDashBord.vue"),
+			children: [
+				{
+					path: "product",
+					component: () => import("../views/DashBordView/AdminProduct.vue"),
+				},
+				{
+					path: "order",
+					component: () => import("../views/DashBordView/AdminOder.vue"),
+				},
+				{
+					path: "coupons",
+					component: () => import("../views/DashBordView/CouponsView.vue"),
+				},
+				{
+					path: "article",
+					component: () => import("../views/DashBordView/AdminArticle.vue"),
+				},
+			],
+		},
 	],
 });
 
