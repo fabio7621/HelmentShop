@@ -33,7 +33,26 @@ const router = createRouter({
 					name: "checkout",
 					component: () => import("../views/FrontView/CheckoutView.vue"),
 				},
+				{
+					path: "/blog/:blogid",
+					name: "bloginner",
+					component: () => import("../views/FrontView/BloginnerView.vue"),
+				},
+				{
+					path: "/blog",
+					name: "blog",
+					component: () => import("../views/FrontView/BlogView.vue"),
+				},
+				{
+					path: "product/:productId",
+					component: () => import("../views/FrontView/ProductView.vue"),
+				},
 			],
+		},
+		{
+			path: "/login",
+			name: "login",
+			component: () => import("../views/loginView.vue"),
 		},
 	],
 });

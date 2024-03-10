@@ -20,7 +20,7 @@
 					class="index-about-btn d-flex align-items-center ms-auto mt-3 mt-md-0"
 				>
 					<div class="index-about-btn-pic">
-						<img src="./src/assets/image/motohead.png" alt="" />
+						<img src="../../assets/image/motohead.png" alt="" />
 					</div>
 					看更多
 				</button>

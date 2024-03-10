@@ -44,7 +44,12 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a class="drop-item dropdown-item" href="#">全部製品</a>
+									<router-link
+										to="/products"
+										class="drop-item dropdown-item"
+										href="#"
+										>全部製品</router-link
+									>
 								</li>
 								<li>
 									<a class="drop-item dropdown-item" href="#">Shoei</a>
@@ -66,8 +71,8 @@
 							</router-link>
 						</li>
 						<li class="nav-item top-navbar-item d-flex flex-column text-center">
-							<a class="nav-link top-navbar-txt" href="./shopcart.html"
-								>部落格<br /><span>ブログ</span></a
+							<router-link to="/blog" class="nav-link top-navbar-txt"
+								>部落格<br /><span>ブログ</span></router-link
 							>
 						</li>
 						<li class="nav-item top-navbar-item d-flex flex-column text-center">
@@ -79,9 +84,9 @@
 							</router-link>
 						</li>
 						<li class="nav-item top-navbar-item d-flex flex-column text-center">
-							<a class="nav-link top-navbar-txt" href="./shopcart.html"
+							<router-link class="nav-link top-navbar-txt" to="/login"
 								>登入<br />
-								<span>ログイン </span></a
+								<span>ログイン </span></router-link
 							>
 						</li>
 					</ul>
