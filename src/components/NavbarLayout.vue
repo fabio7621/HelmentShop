@@ -16,7 +16,7 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<router-link to="/dashbord/products" class="nav-link"
+						<router-link to="/dashbord/product" class="nav-link"
 							>產品</router-link
 						>
 					</li>
