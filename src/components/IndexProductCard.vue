@@ -18,54 +18,16 @@
 		}"
 		class="cardSwiper"
 	>
-		<swiper-slide>
+		<swiper-slide v-for="product in ogkdata" :key="product.id">
 			<div class="index-product-pic">
-				<img src="../assets/image/shoeiZ8usa.webp" alt="" />
+				<img :src="product.imageUrl" alt="" />
 			</div>
-			<h4 class="index-product-title">Shoei Z8</h4>
+			<h4 class="index-product-title">{{ product.title }}</h4>
 			<div class="index-product-price d-flex justify-content-between">
-				<span><del>原價：$500</del></span>
-				<p>售價：$200</p>
-			</div>
-		</swiper-slide>
-		<swiper-slide>
-			<div class="index-product-pic">
-				<img src="../assets/image/shoeiZ8usa.webp" alt="" />
-			</div>
-			<h4 class="index-product-title">Shoei Z8</h4>
-			<div class="index-product-price d-flex justify-content-between">
-				<span><del>原價：$500</del></span>
-				<p>售價：$200</p>
-			</div>
-		</swiper-slide>
-		<swiper-slide>
-			<div class="index-product-pic">
-				<img src="../assets/image/shoeiZ8usa.webp" alt="" />
-			</div>
-			<h4 class="index-product-title">Shoei Z8</h4>
-			<div class="index-product-price d-flex justify-content-between">
-				<span><del>原價：$500</del></span>
-				<p>售價：$200</p>
-			</div>
-		</swiper-slide>
-		<swiper-slide>
-			<div class="index-product-pic">
-				<img src="../assets/image/shoeiZ8usa.webp" alt="" />
-			</div>
-			<h4 class="index-product-title">Shoei Z8</h4>
-			<div class="index-product-price d-flex justify-content-between">
-				<span><del>原價：$500</del></span>
-				<p>售價：$200</p>
-			</div>
-		</swiper-slide>
-		<swiper-slide>
-			<div class="index-product-pic">
-				<img src="../assets/image/shoeiZ8usa.webp" alt="" />
-			</div>
-			<h4 class="index-product-title">Shoei Z8</h4>
-			<div class="index-product-price d-flex justify-content-between">
-				<span><del>原價：$500</del></span>
-				<p>售價：$200</p>
+				<span
+					><del>原價：{{ product.origin_price }}</del></span
+				>
+				<p>售價：{{ product.price }}</p>
 			</div>
 		</swiper-slide>
 	</swiper>
@@ -88,6 +50,7 @@ export default {
 		Swiper,
 		SwiperSlide,
 	},
+	props: ["ogkdata"],
 	setup() {
 		return {
 			modules: [Pagination],
@@ -95,28 +58,3 @@ export default {
 	},
 };
 </script>
-
-<style>
-.swiper {
-	width: 100%;
-	height: 100%;
-}
-
-.swiper-slide {
-	text-align: center;
-	font-size: 18px;
-	background: #fff;
-
-	/* Center slide text vertically */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.swiper-slide img {
-	display: block;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-</style>

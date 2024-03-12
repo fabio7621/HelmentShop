@@ -16,20 +16,21 @@
 						System)是一套專業分析系統，根據個人頭型量測資料，分析出最佳的安全帽內襯配置。由原廠認證的技師進行內襯施工調整，提供消費者更優的配戴體驗。
 					</p>
 				</div>
-				<button
-					class="index-about-btn d-flex align-items-center ms-auto mt-3 mt-md-0"
+				<router-link
+					to="/blog"
+					class="text-decoration-none index-about-btn d-flex align-items-center ms-auto mt-3 mt-md-0"
 				>
 					<div class="index-about-btn-pic">
 						<img src="../../assets/image/motohead.png" alt="" />
 					</div>
 					看更多
-				</button>
+				</router-link>
 			</div>
 		</div>
 	</section>
 	<section class="index-product">
 		<div class="index-product-main">
-			<IndexProductCard></IndexProductCard>
+			<IndexProductCard :ogkdata="ogkProducts"></IndexProductCard>
 		</div>
 	</section>
 </template>
@@ -38,9 +39,31 @@
 import IndexBanner from "@/components/IndexBanner.vue";
 import IndexProductCard from "@/components/IndexProductCard.vue";
 export default {
+	data() {
+		return {
+			ogkProducts: "",
+		};
+	},
+	methods: {
+		getOgk() {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/products?category=ogk`;
+			this.$http(api)
+				.then((res) => {
+					this.ogkProducts = res.data.products;
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		},
+	},
 	components: {
 		IndexBanner,
 		IndexProductCard,
+	},
+	mounted() {
+		this.getOgk();
 	},
 };
 </script>
@@ -62,7 +85,9 @@ export default {
 .cardSwiper .swiper-slide {
 	display: flex;
 	flex-direction: column;
+	min-height: 510px;
 }
+
 .swiper-button-next:after,
 .swiper-button-prev:after {
 	opacity: 0;

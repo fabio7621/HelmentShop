@@ -107,7 +107,7 @@ export default {
 					this.pushMessage({
 						style: "danger",
 						title: "取得產品資訊失敗",
-						content: error.response.data.message,
+						content: err.response.data.message,
 					});
 				});
 		},
