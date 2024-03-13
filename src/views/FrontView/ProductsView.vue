@@ -39,60 +39,29 @@
 				<a href="#">OGK</a>
 			</div>
 			<div class="product-box row">
-				<div class="col-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4">
+				<div
+					class="col-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4"
+					v-for="(item, key) in products"
+					:key="`${key + 12}`"
+				>
 					<div class="product-item">
 						<div class="index-product-pic">
-							<img src="../../assets/image/shoeiZ8usa.webp" alt="" />
+							<img :src="item.imageUrl" alt="Product Image" />
 						</div>
-						<h4 class="index-product-title">Shoei Z8</h4>
+						<h4 class="index-product-title">{{ item.title }}</h4>
 						<div class="index-product-price">
-							<span><del>原價：$500</del></span>
-							<p>售價：$200</p>
+							<span
+								><del>原價：{{ item.origin_price }}</del></span
+							>
+							<p>售價：{{ item.price }}</p>
 						</div>
 						<div class="product-btns d-flex justify-content-around">
-							<a class="d-block w-50 h-100" href="">
+							<router-link
+								:to="`/product/${item.id}`"
+								class="d-block w-50 h-100"
+							>
 								<i class="bi bi-search"></i>
-							</a>
-							<a class="d-block w-50 h-100" href="">
-								<i class="bi bi-cart"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4">
-					<div class="product-item">
-						<div class="index-product-pic">
-							<img src="../../assets/image/shoeiZ8usa.webp" alt="" />
-						</div>
-						<h4 class="index-product-title">Shoei Z8</h4>
-						<div class="index-product-price">
-							<span><del>原價：$500</del></span>
-							<p>售價：$200</p>
-						</div>
-						<div class="product-btns d-flex justify-content-around">
-							<a class="d-block w-50 h-100" href="">
-								<i class="bi bi-search"></i>
-							</a>
-							<a class="d-block w-50 h-100" href="">
-								<i class="bi bi-cart"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4">
-					<div class="product-item">
-						<div class="index-product-pic">
-							<img src="../../assets/image/shoeiZ8usa.webp" alt="" />
-						</div>
-						<h4 class="index-product-title">Shoei Z8</h4>
-						<div class="index-product-price">
-							<span><del>原價：$500</del></span>
-							<p>售價：$200</p>
-						</div>
-						<div class="product-btns d-flex justify-content-around">
-							<a class="d-block w-50 h-100" href="">
-								<i class="bi bi-search"></i>
-							</a>
+							</router-link>
 							<a class="d-block w-50 h-100" href="">
 								<i class="bi bi-cart"></i>
 							</a>
@@ -102,23 +71,53 @@
 			</div>
 			<nav aria-label="Page d-flex navigation example pt-3">
 				<ul class="pagination justify-content-center">
-					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Previous">
-							<span aria-hidden="true"
-								><i class="bi bi-caret-left-fill"></i
-							></span>
+					<li
+						class="page-item"
+						:class="{ disabled: pagination.current_page === 1 }"
+					>
+						<a
+							class="page-link"
+							href="#"
+							aria-label="Previous"
+							@click.prevent="getData(pagination.current_page - 1)"
+						>
+							<span aria-hidden="true">
+								<i class="bi bi-caret-left-fill"></i>
+							</span>
 						</a>
 					</li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item active">
-						<a class="page-link" href="#">3</a>
+					<li
+						v-for="(item, index) in pagination.total_pages"
+						:key="index"
+						class="page-item"
+						:class="{ active: item === pagination.current_page }"
+					>
+						<span class="page-link" v-if="item === pagination.current_page">
+							{{ item }}
+						</span>
+						<a
+							class="page-link"
+							href="#"
+							v-else
+							@click.prevent="getData(item)"
+							>{{ item }}</a
+						>
 					</li>
-					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Next">
-							<span aria-hidden="true"
-								><i class="bi bi-caret-right-fill"></i
-							></span>
+					<li
+						class="page-item"
+						:class="{
+							disabled: pagination.current_page === pagination.total_pages,
+						}"
+					>
+						<a
+							class="page-link"
+							href="#"
+							aria-label="Next"
+							@click.prevent="getData(pagination.current_page + 1)"
+						>
+							<span aria-hidden="true">
+								<i class="bi bi-caret-right-fill"></i>
+							</span>
 						</a>
 					</li>
 				</ul>
@@ -126,5 +125,40 @@
 		</div>
 	</section>
 </template>
-<script></script>
+<script>
+import Pagination from "@/components/Pagination.vue";
+export default {
+	data() {
+		return {
+			products: [],
+			pagination: {},
+		};
+	},
+	methods: {
+		getData(page = 1) {
+			const api = `${import.meta.env.VITE_API}/api/${
+				import.meta.env.VITE_APIPATH
+			}/products?page=${page}`;
+			this.isLoading = true;
+			this.$http
+				.get(api)
+				.then((res) => {
+					const { products, pagination } = res.data;
+					this.products = products;
+					this.pagination = pagination;
+					this.isLoading = false;
+				})
+				.catch((err) => {
+					console.log(`取得產品資訊失敗${err.response.data.message}`);
+				});
+		},
+	},
+	components: {
+		Pagination,
+	},
+	mounted() {
+		this.getData();
+	},
+};
+</script>
 <style scoped></style>

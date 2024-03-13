@@ -20,7 +20,7 @@
 					</div>
 				</li>
 				<li class="bread-list-item" aria-current="page">
-					<a>Shoei X15</a>
+					<a>{{ product.title }}</a>
 				</li>
 			</ol>
 		</div>
@@ -29,57 +29,6 @@
 		<div class="section-product-main">
 			<div class="article-box row">
 				<div class="col-12 col-md-6">
-					<!-- Swiper -->
-					<!-- <swiper
-						:style="{
-							'--swiper-navigation-color': '#fff',
-							'--swiper-pagination-color': '#fff',
-						}"
-						:loop="true"
-						:spaceBetween="10"
-						:navigation="true"
-						:thumbs="{ swiper: thumbsSwiper }"
-						:modules="modules"
-						class="mySwiper2"
-					>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<div class="swiper-button-prev">
-							<img
-								class="w-100"
-								src="../../assets/image/icon/arrow_4.svg"
-								alt="prev"
-							/>
-						</div>
-						<div class="swiper-button-next">
-							<img
-								class="w-100"
-								src="../../assets/image/icon/arrow_5.svg"
-								alt="next"
-							/>
-						</div>
-					</swiper>
-					<swiper
-						@swiper="setThumbsSwiper"
-						:loop="true"
-						:spaceBetween="10"
-						:slidesPerView="4"
-						:freeMode="true"
-						:watchSlidesProgress="true"
-						:modules="modules"
-						class="mySwiper"
-					>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-					</swiper> -->
 					<swiper
 						:style="{
 							'--swiper-navigation-color': '#fff',
@@ -95,17 +44,17 @@
 						:modules="modules"
 						class="mySwiper2"
 					>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
+						<swiper-slide
+							v-if="!product.imagesUrl || product.imagesUrl.length === 0"
+						>
+							<img :src="product.imageUrl" alt="Product Image" />
 						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
+						<swiper-slide
+							v-else
+							v-for="(url, index) in product.imagesUrl"
+							:key="index"
+						>
+							<img :src="url" alt="Product Image" />
 						</swiper-slide>
 						<div class="swiper-button-prev">
 							<img
@@ -132,33 +81,33 @@
 						:modules="modules"
 						class="mySwiper"
 					>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
+						<swiper-slide
+							v-if="!product.imagesUrl || product.imagesUrl.length === 0"
+						>
+							<img :src="product.imageUrl" alt="Product Image" />
 						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
-						</swiper-slide>
-						<swiper-slide>
-							<img src="../../assets/image/shoeiZ8usa.webp" />
+						<swiper-slide
+							v-else
+							v-for="(url, index) in product.imagesUrl"
+							:key="index"
+						>
+							<img :src="url" alt="Product Image" />
 						</swiper-slide>
 					</swiper>
 				</div>
 				<!-- 加入尋價車 -->
 				<div class="col-12 col-md-6 d-flex flex-column">
 					<div class="pro-inner-txt">
-						<h3>Shoei Z8</h3>
+						<h3>{{ product.title }}</h3>
 						<div class="pro-inner-price d-flex">
-							<span><del>定價：400</del></span>
-							<p>優惠價：350</p>
+							<span
+								><del>{{ product.origin_price }}</del></span
+							>
+							<p>{{ product.price }}</p>
 						</div>
 						<div class="pro-inner-content">
 							<p>
-								文案待補文案待補文案待補文案待補文案待補文案待補文案待補
-								文案待補文案待補文案待補文案待補文案待補文案待補文案待補
-								文案待補文案待補文案待補文案待補
+								{{ product.description }}
 							</p>
 						</div>
 					</div>
@@ -175,17 +124,14 @@
 					</div>
 				</div>
 			</div>
-			<a class="backBtn">回到上一頁</a>
+			<router-link to="/products" class="backBtn">回到上一頁</router-link>
 		</div>
 	</section>
 </template>
 
 <script>
-import { ref } from "vue";
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
-// Import Swiper styles
 import "swiper/css";
 
 import "swiper/css/free-mode";
@@ -196,6 +142,24 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 export default {
+	data() {
+		return {
+			product: {},
+			id: "",
+		};
+	},
+	methods: {
+		getProduct() {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/product/${this.id}`;
+			this.isLoading = true;
+			this.$http.get(api).then((response) => {
+				this.product = response.data.product;
+				console.log(this.product);
+			});
+		},
+	},
 	components: {
 		Swiper,
 		SwiperSlide,
@@ -207,6 +171,10 @@ export default {
 			// thumbsSwiper,
 			modules: [FreeMode, Navigation, Thumbs],
 		};
+	},
+	created() {
+		this.id = this.$route.params.productId;
+		this.getProduct();
 	},
 };
 </script>

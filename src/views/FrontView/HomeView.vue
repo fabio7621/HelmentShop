@@ -67,7 +67,7 @@ export default {
 	},
 };
 </script>
-<style>
+<style scoped>
 .swiper {
 	width: 100%;
 	height: 100%;
@@ -85,9 +85,13 @@ export default {
 .cardSwiper .swiper-slide {
 	display: flex;
 	flex-direction: column;
-	min-height: 510px;
 }
-
+.index-product-pic {
+	height: 300px;
+}
+.index-product-pic img {
+	object-fit: cover;
+}
 .swiper-button-next:after,
 .swiper-button-prev:after {
 	opacity: 0;
