@@ -130,6 +130,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 import "swiper/css";
@@ -165,10 +166,15 @@ export default {
 		SwiperSlide,
 	},
 	setup() {
-		// const thumbsSwiper = ref(null);
+		const thumbsSwiper = ref(null);
+
+		const setThumbsSwiper = (swiper) => {
+			thumbsSwiper.value = swiper;
+		};
 
 		return {
-			// thumbsSwiper,
+			thumbsSwiper,
+			setThumbsSwiper,
 			modules: [FreeMode, Navigation, Thumbs],
 		};
 	},
