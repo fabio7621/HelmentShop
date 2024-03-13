@@ -20,7 +20,7 @@
 	>
 		<swiper-slide v-for="product in ogkdata" :key="product.id">
 			<div class="index-product-pic">
-				<img :src="product.imageUrl" alt="" />
+				<img class="img-fluid" :src="product.imageUrl" alt="" />
 			</div>
 			<h4 class="index-product-title">{{ product.title }}</h4>
 			<div class="index-product-price d-flex justify-content-between">

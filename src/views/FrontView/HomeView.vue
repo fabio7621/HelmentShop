@@ -67,7 +67,7 @@ export default {
 	},
 };
 </script>
-<style scoped>
+<style>
 .swiper {
 	width: 100%;
 	height: 100%;
@@ -87,9 +87,10 @@ export default {
 	flex-direction: column;
 }
 .index-product-pic {
-	height: 300px;
+	max-height: 500px;
 }
 .index-product-pic img {
+	width: 100%;
 	object-fit: cover;
 }
 .swiper-button-next:after,
