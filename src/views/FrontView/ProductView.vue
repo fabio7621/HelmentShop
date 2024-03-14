@@ -111,9 +111,23 @@
 							</p>
 						</div>
 					</div>
+					<div class="input-group flex-nowrap">
+						<input
+							type="number"
+							v-model.number="qty"
+							class="form-control"
+							aria-label="Userqty"
+							aria-describedby="addon-wrapping"
+							min="1"
+							max="10"
+						/>
+						<span class="input-group-text" id="addon-wrapping">
+							{{ product.unit }}
+						</span>
+					</div>
 					<div class="pro-inner-btn">
 						<button
-							onclick="window.location.href = '#'"
+							@click.prevent="addToCart()"
 							class="d-flex justify-content-center align-items-center"
 						>
 							加入購物車
@@ -154,11 +168,26 @@ export default {
 			const api = `${import.meta.env.VITE_API}api/${
 				import.meta.env.VITE_APIPATH
 			}/product/${this.id}`;
-			this.isLoading = true;
 			this.$http.get(api).then((response) => {
 				this.product = response.data.product;
-				console.log(this.product);
 			});
+		},
+		addToCart(id, qty = 1) {
+			const url = `${import.meta.env.VITE_API}/api/${
+				import.meta.env.VITE_PATH
+			}/cart`;
+			const cart = {
+				product_id: this.product.id,
+				qty: 1,
+			};
+			this.$http
+				.post(url, { data: cart })
+				.then((response) => {
+					console.log(OK);
+				})
+				.catch((error) => {
+					console.log(false);
+				});
 		},
 	},
 	components: {

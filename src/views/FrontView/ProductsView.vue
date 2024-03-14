@@ -34,9 +34,15 @@
 				<h2>產品資訊</h2>
 			</div>
 			<div class="section-product-nav">
-				<a href="#">Shoei</a>
-				<a href="#">Arai</a>
-				<a href="#">OGK</a>
+				<li
+					style="list-style-type: none"
+					v-for="item in categories"
+					:key="item"
+				>
+					<RouterLink :to="`/products?category=${item}`">
+						{{ item }}
+					</RouterLink>
+				</li>
 			</div>
 			<div class="product-box row">
 				<div
@@ -127,30 +133,39 @@
 </template>
 <script>
 import Pagination from "@/components/Pagination.vue";
+import { RouterLink } from "vue-router";
 export default {
 	data() {
 		return {
 			products: [],
 			pagination: {},
+			categories: ["shoei", "ogk", "arai"],
 		};
 	},
 	methods: {
 		getData(page = 1) {
+			const { category = "" } = this.$route.query;
 			const api = `${import.meta.env.VITE_API}/api/${
 				import.meta.env.VITE_APIPATH
-			}/products?page=${page}`;
-			this.isLoading = true;
+			}/products?category=${category}&${page}`;
 			this.$http
 				.get(api)
 				.then((res) => {
 					const { products, pagination } = res.data;
 					this.products = products;
 					this.pagination = pagination;
-					this.isLoading = false;
 				})
 				.catch((err) => {
 					console.log(`取得產品資訊失敗${err.response.data.message}`);
 				});
+		},
+	},
+	watch: {
+		"$route.query": {
+			handler() {
+				this.getData();
+			},
+			deep: true,
 		},
 	},
 	components: {

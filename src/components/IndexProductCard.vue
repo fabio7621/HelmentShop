@@ -19,16 +19,21 @@
 		class="cardSwiper"
 	>
 		<swiper-slide v-for="product in ogkdata" :key="product.id">
-			<div class="index-product-pic">
-				<img class="img-fluid" :src="product.imageUrl" alt="" />
-			</div>
-			<h4 class="index-product-title">{{ product.title }}</h4>
-			<div class="index-product-price d-flex justify-content-between">
-				<span
-					><del>原價：{{ product.origin_price }}</del></span
-				>
-				<p>售價：{{ product.price }}</p>
-			</div>
+			<router-link
+				class="d-block text-decoration-none"
+				:to="`/product/${product.id}`"
+			>
+				<div class="index-product-pic">
+					<img class="img-fluid" :src="product.imageUrl" alt="" />
+				</div>
+				<h4 class="index-product-title">{{ product.title }}</h4>
+				<div class="index-product-price d-flex justify-content-between">
+					<span
+						><del>原價：{{ product.origin_price }}</del></span
+					>
+					<p>售價：{{ product.price }}</p>
+				</div>
+			</router-link>
 		</swiper-slide>
 	</swiper>
 </template>
