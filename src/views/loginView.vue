@@ -2,7 +2,7 @@
 	<section class="login-wrap">
 		<form @submit.prevent="login" class="login-box">
 			<div class="login-pic">
-				<img class="w-100" src="../assets/image/loginpic.jpg" />
+				<img class="w-100" src="../assets/image/loginpic001.jpg" />
 			</div>
 			<div class="d-flex flex-column">
 				<label for="myemail"> Email </label>
