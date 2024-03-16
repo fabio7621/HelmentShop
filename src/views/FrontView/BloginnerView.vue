@@ -43,32 +43,54 @@
 				<div class="col-12">
 					<div class="article-item">
 						<a class="article-item-pic d-block">
-							<img
-								class="w-100"
-								src="../../assets/image/490105-kofu.webp"
-								alt=""
-							/>
+							<img :src="article.imageUrl" class="w-100" />
 						</a>
 						<div class="article-content">
-							<h3>文章標題</h3>
-							<p>法比奧<span>2025/12/01</span></p>
+							<h3>{{ article.title }}</h3>
 							<p>
-								Marc Marquez同意Luca
-								Marini對於DUCATI與HONDA需要採取相反的方法來處理後輪問題的說法。Gresini
-								DUCATI車手Marc
-								Marquez詳細的討論到了他在HONDA經歷過長時間騎乘RC213V之後更改至DUCATI有多麼困難。
+								{{ article.author
+								}}<span>{{ $filters.date(article.create_at) }}</span>
 							</p>
+							<div v-html="article.content"></div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<a class="backBtn">回到上一頁</a>
+			<router-link to="/blog" class="backBtn">回到上一頁</router-link>
 		</div>
 	</section>
 </template>
 
 <script>
-export default {};
+export default {
+	data() {
+		return {
+			article: {},
+			id: "",
+		};
+	},
+	methods: {
+		getArticle() {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/article/${this.id}`;
+
+			this.$http
+				.get(api)
+				.then((response) => {
+					this.article = response.data.article;
+				})
+				.catch((error) => {
+					console.log("取得文章資訊失敗", error.response.data.message);
+				});
+			console.log(this.id);
+		},
+	},
+	created() {
+		this.id = this.$route.params.blogid;
+		this.getArticle();
+	},
+};
 </script>
 
 <style></style>

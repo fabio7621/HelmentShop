@@ -20,7 +20,7 @@
 					</div>
 				</li>
 				<li class="bread-list-item" aria-current="page">
-					<a>關於我</a>
+					<a>關於本店</a>
 				</li>
 			</ol>
 		</div>
@@ -31,7 +31,7 @@
 				<div class="product-title-pic">
 					<img src="../../assets/image/motohead.png" alt="" />
 				</div>
-				<h2>關於我</h2>
+				<h2>關於本店</h2>
 			</div>
 			<div class="article-box row">
 				<div class="col-12">
@@ -44,12 +44,12 @@
 							/>
 						</a>
 						<div class="article-content">
-							<h4>文章標題</h4>
+							<h4>關於本店</h4>
 							<p>
-								Marc Marquez同意Luca
-								Marini對於DUCATI與HONDA需要採取相反的方法來處理後輪問題的說法。Gresini
-								DUCATI車手Marc
-								Marquez詳細的討論到了他在HONDA經歷過長時間騎乘RC213V之後更改至DUCATI有多麼困難。
+								我們開始發跡於露天網路拍賣，三年累積廣大消費者好評，終於
+								2017.1.21 成立實體門市，並且親自代理國外許多部品，如日本 TANAX
+								及 DEGNER，英國 DART 及
+								Pyramid，引進更多高品質騎士部品及改裝配件，期能與國外同步體驗最棒的產品。
 							</p>
 						</div>
 					</div>

@@ -62,6 +62,7 @@
 												class="form-control"
 												id="floatingInputGroup1"
 												v-model.number="item.qty"
+												@blur="updateCart(item)"
 											/>
 											<label for="floatingInputGroup1"></label>
 										</div>
@@ -223,12 +224,35 @@ export default {
 					console.log(error.response.data.message);
 				});
 		},
+		updateCart(item) {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/cart/${item.id}`;
+			const cart = {
+				product_id: item.product_id,
+				qty: item.qty,
+			};
+			this.$http
+				.put(api, { data: cart })
+				.then((response) => {
+					this.getCart();
+				})
+				.catch((error) => {
+					console.log("更新購物車失敗", error.response.data.message);
+				});
+		},
 	},
 	mounted() {
 		this.getCart();
-		console.log(this.carts);
 	},
 };
 </script>
-
-<style></style>
+<style scoped>
+.form-floating > .form-control:focus,
+.form-floating > .form-control:not(:placeholder-shown),
+.form-floating > .form-control-plaintext:focus,
+.form-floating > .form-control-plaintext:not(:placeholder-shown) {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+</style>

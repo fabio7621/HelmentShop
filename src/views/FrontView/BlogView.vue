@@ -38,54 +38,71 @@
 				<a href="#">MotoGp</a>
 			</div>
 			<div class="article-box row">
-				<div class="col-12 col-md-6 p-3">
+				<router-link
+					:to="`/blog/${item.id}`"
+					v-for="item in articles"
+					:key="item.create_at"
+					class="col-12 col-md-6 p-3 d-block text-decoration-none"
+				>
 					<div class="article-item">
 						<a class="article-item-pic d-block">
-							<img
-								class="w-100"
-								src="../../assets/image/490105-kofu.webp"
-								alt=""
-							/>
+							<img class="w-100" :src="item.imageUrl" alt="" />
 						</a>
 						<div class="article-content">
-							<h3>文章標題</h3>
+							<h3>{{ item.title }}</h3>
 						</div>
 					</div>
-				</div>
-				<div class="col-12 col-md-6 p-3">
-					<div class="article-item">
-						<a class="article-item-pic d-block">
-							<img
-								class="w-100"
-								src="../../assets/image/490105-kofu.webp"
-								alt=""
-							/>
-						</a>
-						<div class="article-content">
-							<h3>文章標題</h3>
-						</div>
-					</div>
-				</div>
+				</router-link>
 			</div>
 			<nav aria-label="Page d-flex navigation example pt-3">
 				<ul class="pagination justify-content-center">
-					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Previous">
-							<span aria-hidden="true"
-								><i class="bi bi-caret-left-fill"></i
-							></span>
+					<li
+						class="page-item"
+						:class="{ disabled: pagination.current_page === 1 }"
+					>
+						<a
+							class="page-link"
+							href="#"
+							aria-label="Previous"
+							@click.prevent="getArticles(pagination.current_page - 1)"
+						>
+							<span aria-hidden="true">
+								<i class="bi bi-caret-left-fill"></i>
+							</span>
 						</a>
 					</li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item active">
-						<a class="page-link" href="#">3</a>
+					<li
+						v-for="(item, index) in pagination.total_pages"
+						:key="index"
+						class="page-item"
+						:class="{ active: item === pagination.current_page }"
+					>
+						<span class="page-link" v-if="item === pagination.current_page">
+							{{ item }}
+						</span>
+						<a
+							class="page-link"
+							href="#"
+							v-else
+							@click.prevent="getArticles(item)"
+							>{{ item }}</a
+						>
 					</li>
-					<li class="page-item">
-						<a class="page-link" href="#" aria-label="Next">
-							<span aria-hidden="true"
-								><i class="bi bi-caret-right-fill"></i
-							></span>
+					<li
+						class="page-item"
+						:class="{
+							disabled: pagination.current_page === pagination.total_pages,
+						}"
+					>
+						<a
+							class="page-link"
+							href="#"
+							aria-label="Next"
+							@click.prevent="getArticles(pagination.current_page + 1)"
+						>
+							<span aria-hidden="true">
+								<i class="bi bi-caret-right-fill"></i>
+							</span>
 						</a>
 					</li>
 				</ul>
@@ -95,7 +112,34 @@
 </template>
 
 <script>
-export default {};
+export default {
+	data() {
+		return {
+			articles: [],
+			pagination: {},
+		};
+	},
+	methods: {
+		getArticles(page = 1) {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/articles?page=${page}`;
+			console.log(api);
+			this.$http
+				.get(api)
+				.then((response) => {
+					this.articles = response.data.articles;
+					this.pagination = response.data.pagination;
+				})
+				.catch((error) => {
+					console.log("取得文章資訊失敗", error.response.data.message);
+				});
+		},
+	},
+	mounted() {
+		this.getArticles();
+	},
+};
 </script>
 
 <style></style>
