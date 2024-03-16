@@ -43,12 +43,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr v-for="item in carts" :key="item.product_id">
 								<td class="d-flex align-items-center">
-									<a href="#" class="d-block cart-pic">
-										<img src="../../assets/image/shoeiZ8usa.webp" />
-									</a>
-									<p>shoei Z8</p>
+									<router-link
+										:to="`/product/${item.product_id}`"
+										class="d-block cart-pic"
+									>
+										<img :src="item.product.imageUrl" />
+									</router-link>
+									<p>{{ item.product.title }}</p>
 								</td>
 
 								<td class="align-middle p-0">
@@ -58,43 +61,55 @@
 												type="number"
 												class="form-control"
 												id="floatingInputGroup1"
+												v-model.number="item.qty"
 											/>
 											<label for="floatingInputGroup1"></label>
 										</div>
 										<span
 											style="font-weight: 300; font-size: 13px"
 											class="input-group-text"
-											>頂</span
+											>{{ item.product.unit }}</span
 										>
 									</div>
 								</td>
 								<td class="align-middle">
-									<div class="cart-del mx-auto">
+									<div
+										@click="removeCartItem(item.id)"
+										class="cart-del mx-auto"
+									>
 										<img src="../../assets/image/icon/delete.svg" alt="" />
 									</div>
 								</td>
-								<td class="align-middle text-end"><span>$350</span></td>
+								<td class="align-middle text-end">
+									<span>{{ item.final_total }}</span>
+								</td>
 							</tr>
 						</tbody>
 					</table>
 					<div class="checkout-total d-flex flex-row-reverse">
 						<div class="checkout-total-price d-flex">
 							<p>總金額</p>
-							<span>$950</span>
+							<span>${{ final_total }}</span>
 						</div>
 					</div>
 					<div class="section-checkout-order">
 						<div class="checkout-order-main">
-							<form class="checkout-order-box" action="">
+							<form
+								@submit="createOrder"
+								ref="form"
+								class="checkout-order-box"
+								action=""
+							>
 								<div class="section-order-item">
 									<label class="mb-md-3 mb-3" for="email"
 										><span>＊</span>email
 									</label>
 									<input
-										type="text"
+										type="email"
 										class="w-100 mb-md-5 mb-3 form-control"
 										id="email"
 										placeholder="email"
+										v-model="form.user.email"
 									/>
 								</div>
 								<div class="section-order-item">
@@ -106,6 +121,7 @@
 										class="w-100 mb-md-5 mb-3 form-control"
 										type="text"
 										id="yourname"
+										v-model="form.user.name"
 									/>
 								</div>
 								<div class="section-order-item">
@@ -116,6 +132,7 @@
 										placeholder="收件人電話"
 										class="w-100 mb-md-5 mb-3 form-control"
 										type="tel"
+										v-model="form.user.tel"
 									/>
 								</div>
 								<div class="section-order-item">
@@ -126,6 +143,7 @@
 										placeholder="收件人地址"
 										class="w-100 mb-md-5 mb-3 form-control"
 										type="text"
+										v-model="form.user.address"
 									/>
 								</div>
 								<div class="section-order-item">
@@ -135,11 +153,17 @@
 										name=""
 										id=""
 										rows="10"
+										v-model="form.message"
 									></textarea>
 								</div>
 							</form>
 
-							<button class="checkout-pay-order-btn w-100">確認結帳</button>
+							<button
+								@click="createOrder()"
+								class="checkout-pay-order-btn w-100"
+							>
+								確認送出
+							</button>
 						</div>
 					</div>
 				</div>
@@ -149,7 +173,62 @@
 </template>
 
 <script>
-export default {};
+import { mapActions, mapState } from "pinia";
+import cartStore from "@/stores/cartStore";
+
+export default {
+	data() {
+		return {
+			form: {
+				user: {
+					name: "",
+					email: "",
+					tel: "",
+					address: "",
+				},
+				message: "",
+			},
+		};
+	},
+	computed: {
+		...mapState(cartStore, ["carts", "final_total", "total"]),
+	},
+	methods: {
+		...mapActions(cartStore, ["getCart"]),
+		removeCartItem(id) {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/cart/${id}`;
+			this.$http
+				.delete(api)
+				.then((response) => {
+					this.getCart();
+				})
+				.catch((error) => {
+					console.log(error.response.data.message);
+				});
+		},
+		createOrder() {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/order`;
+			const order = this.form;
+			this.$http
+				.post(api, { data: order })
+				.then((response) => {
+					this.getCart();
+					this.$refs.form.resetForm();
+				})
+				.catch((error) => {
+					console.log(error.response.data.message);
+				});
+		},
+	},
+	mounted() {
+		this.getCart();
+		console.log(this.carts);
+	},
+};
 </script>
 
 <style></style>
