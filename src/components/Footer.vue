@@ -3,9 +3,9 @@
 		<div class="footer-container row">
 			<div class="col-12 col-md-6">
 				<div class="footer-lelt">
-					<a href="./index.html" class="footer-logo d-block">
+					<router-link to="/" class="footer-logo d-block">
 						<img src="../assets/image/logo.png" alt="" />
-					</a>
+					</router-link>
 					<div class="footer-lelt-add d-flex flex-column">
 						<a>電話&nbsp;/ 0932885689</a>
 						<a href="mailto:d6200121a@gmail.com"

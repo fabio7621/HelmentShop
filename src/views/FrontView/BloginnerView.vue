@@ -2,12 +2,12 @@
 	<section class="section-main-banner">
 		<img
 			class="d-none d-md-block w-100"
-			src="./src/assets/image/productbanner0003.png"
+			src="../../assets/image/productbanner0003.png"
 			alt=""
 		/>
 		<img
 			class="d-block d-md-none w-100"
-			src="./src/assets/image/phone-banner/banner-p04.png"
+			src="../../assets/image/phone-banner/banner-p04.png"
 			alt=""
 		/>
 	</section>
@@ -16,7 +16,7 @@
 			<ol class="bread-list d-flex align-items-center">
 				<li class="bread-list-item">
 					<div class="section-bread-pic">
-						<img width="20" src="./src/assets/image/icon/home.svg" alt="" />
+						<img width="20" src="../../assets/image/icon/home.svg" alt="" />
 					</div>
 				</li>
 				<li class="bread-list-item" aria-current="page">
