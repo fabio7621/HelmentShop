@@ -4,6 +4,7 @@ import "./assets/all.scss";
 // Import all of Bootstrap's JS
 import * as bootstrap from "bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -21,6 +22,7 @@ app.mount("#app");
 
 app.use(VueAxios, axios);
 app.component("VueLoading", Loading);
+app.use(CKEditor);
 
 import { date, currency } from "@/methods/filters";
 //引入另外建立的方法且在全域上用
