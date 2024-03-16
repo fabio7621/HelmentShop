@@ -7,7 +7,7 @@
 		/>
 		<img
 			class="d-block d-md-none w-100"
-			src="../../src/assets/image/phone-banner/banner-p04.png"
+			src="../../assets/image/phone-banner/banner-p04.png"
 			alt=""
 		/>
 	</section>
