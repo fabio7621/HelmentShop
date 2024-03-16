@@ -46,7 +46,7 @@
 			</div>
 			<div class="product-box row">
 				<div
-					class="col-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4"
+					class="col-12 col-md-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4"
 					v-for="(item, key) in products"
 					:key="`${key + 12}`"
 				>
