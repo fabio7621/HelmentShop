@@ -55,7 +55,7 @@ export default {
 		Swiper,
 		SwiperSlide,
 	},
-	props: ["ogkdata"],
+	props: ["ogkdata", "isLoading"],
 	setup() {
 		return {
 			modules: [Pagination],

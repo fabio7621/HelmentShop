@@ -1,4 +1,7 @@
 <template>
+	<VueLoading :active="isLoading" :z-index="1060">
+		<Loadingitem></Loadingitem>
+	</VueLoading>
 	<IndexBanner></IndexBanner>
 	<section class="index-about">
 		<div class="index-about-main row">
@@ -30,7 +33,10 @@
 	</section>
 	<section class="index-product">
 		<div class="index-product-main">
-			<IndexProductCard :ogkdata="ogkProducts"></IndexProductCard>
+			<IndexProductCard
+				:ogkdata="ogkProducts"
+				:is-loading="isLoading"
+			></IndexProductCard>
 		</div>
 	</section>
 </template>
@@ -38,20 +44,24 @@
 <script>
 import IndexBanner from "@/components/IndexBanner.vue";
 import IndexProductCard from "@/components/IndexProductCard.vue";
+import Loadingitem from "@/components/Loadingitem.vue";
 export default {
 	data() {
 		return {
 			ogkProducts: "",
+			isLoading: false,
 		};
 	},
 	methods: {
 		getOgk() {
+			this.isLoading = true;
 			const api = `${import.meta.env.VITE_API}api/${
 				import.meta.env.VITE_APIPATH
 			}/products?category=ogk`;
 			this.$http(api)
 				.then((res) => {
 					this.ogkProducts = res.data.products;
+					this.isLoading = false;
 				})
 				.catch((err) => {
 					console.log(err);
@@ -61,6 +71,7 @@ export default {
 	components: {
 		IndexBanner,
 		IndexProductCard,
+		Loadingitem,
 	},
 	mounted() {
 		this.getOgk();

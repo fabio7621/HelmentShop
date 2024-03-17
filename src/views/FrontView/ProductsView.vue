@@ -1,4 +1,7 @@
 <template>
+	<VueLoading :active="isLoading" :z-index="1060">
+		<Loadingitem></Loadingitem>
+	</VueLoading>
 	<section class="section-main-banner">
 		<img
 			class="d-none d-md-block w-100"
@@ -140,17 +143,20 @@
 import { mapActions } from "pinia";
 import cartStore from "@/stores/cartStore";
 import Pagination from "@/components/Pagination.vue";
+import Loadingitem from "@/components/Loadingitem.vue";
 export default {
 	data() {
 		return {
 			products: [],
 			pagination: {},
 			categories: ["shoei", "ogk", "arai"],
+			isLoading: false,
 		};
 	},
 	methods: {
 		...mapActions(cartStore, ["addToCart"]),
 		getData(page = 1) {
+			this.isLoading = true;
 			const { category = "" } = this.$route.query;
 			const api = `${import.meta.env.VITE_API}/api/${
 				import.meta.env.VITE_APIPATH
@@ -161,6 +167,7 @@ export default {
 					const { products, pagination } = res.data;
 					this.products = products;
 					this.pagination = pagination;
+					this.isLoading = false;
 				})
 				.catch((err) => {
 					console.log(`取得產品資訊失敗${err.response.data.message}`);
@@ -177,6 +184,7 @@ export default {
 	},
 	components: {
 		Pagination,
+		Loadingitem,
 	},
 	mounted() {
 		this.getData();

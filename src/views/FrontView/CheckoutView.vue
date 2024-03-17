@@ -1,4 +1,7 @@
 <template>
+	<VueLoading :active="isLoading" :z-index="1060">
+		<Loadingitem></Loadingitem>
+	</VueLoading>
 	<section class="section-main-banner">
 		<img
 			class="d-none d-md-block w-100"
@@ -193,10 +196,12 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
+import Loadingitem from "@/components/Loadingitem.vue";
 
 export default {
 	data() {
 		return {
+			isLoading: false,
 			form: {
 				user: {
 					name: "",
@@ -258,6 +263,9 @@ export default {
 					console.log("更新購物車失敗", error.response.data.message);
 				});
 		},
+	},
+	components: {
+		Loadingitem,
 	},
 	mounted() {
 		this.getCart();
