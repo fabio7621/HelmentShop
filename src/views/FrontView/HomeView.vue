@@ -45,6 +45,8 @@
 import IndexBanner from "@/components/IndexBanner.vue";
 import IndexProductCard from "@/components/IndexProductCard.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
+import { mapActions } from "pinia";
+import { useToastMessageStore } from "@/stores/toastMessage";
 export default {
 	data() {
 		return {
@@ -53,6 +55,7 @@ export default {
 		};
 	},
 	methods: {
+		...mapActions(useToastMessageStore, ["pushMessage"]),
 		getOgk() {
 			this.isLoading = true;
 			const api = `${import.meta.env.VITE_API}api/${
@@ -75,6 +78,11 @@ export default {
 	},
 	mounted() {
 		this.getOgk();
+		this.pushMessage({
+			style: "success",
+			title: "歡迎光臨",
+			content: `買千送買優惠活動持續中！！`,
+		});
 	},
 };
 </script>

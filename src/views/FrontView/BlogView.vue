@@ -1,4 +1,7 @@
 <template>
+	<VueLoading :active="isLoading" :z-index="1060">
+		<Loadingitem></Loadingitem>
+	</VueLoading>
 	<section class="section-main-banner">
 		<img
 			class="d-none d-md-block w-100"
@@ -112,15 +115,19 @@
 </template>
 
 <script>
+import Pagination from "@/components/Pagination.vue";
+import Loadingitem from "@/components/Loadingitem.vue";
 export default {
 	data() {
 		return {
 			articles: [],
 			pagination: {},
+			isLoading: false,
 		};
 	},
 	methods: {
 		getArticles(page = 1) {
+			this.isLoading = true;
 			const api = `${import.meta.env.VITE_API}api/${
 				import.meta.env.VITE_APIPATH
 			}/articles?page=${page}`;
@@ -130,11 +137,16 @@ export default {
 				.then((response) => {
 					this.articles = response.data.articles;
 					this.pagination = response.data.pagination;
+					this.isLoading = false;
 				})
 				.catch((error) => {
 					console.log("取得文章資訊失敗", error.response.data.message);
 				});
 		},
+	},
+	components: {
+		Pagination,
+		Loadingitem,
 	},
 	mounted() {
 		this.getArticles();
