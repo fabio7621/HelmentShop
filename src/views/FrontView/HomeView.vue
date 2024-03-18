@@ -31,6 +31,7 @@
 			</div>
 		</div>
 	</section>
+	<CouponSection></CouponSection>
 	<section class="index-product">
 		<div class="index-product-main">
 			<IndexProductCard
@@ -45,6 +46,7 @@
 import IndexBanner from "@/components/IndexBanner.vue";
 import IndexProductCard from "@/components/IndexProductCard.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
+import CouponSection from "@/components/CouponSection.vue";
 import { mapActions } from "pinia";
 import { useToastMessageStore } from "@/stores/toastMessage";
 export default {
@@ -75,6 +77,7 @@ export default {
 		IndexBanner,
 		IndexProductCard,
 		Loadingitem,
+		CouponSection,
 	},
 	mounted() {
 		this.getOgk();

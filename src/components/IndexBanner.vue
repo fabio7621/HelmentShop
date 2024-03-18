@@ -19,7 +19,7 @@
 			<swiper-slide>
 				<img
 					class="d-none d-md-block"
-					src="../assets/image/indexbanner.png"
+					src="../assets/image/indexbanner002.png"
 					alt="banner"
 				/>
 				<img

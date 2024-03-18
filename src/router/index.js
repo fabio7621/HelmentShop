@@ -34,6 +34,11 @@ const router = createRouter({
 					component: () => import("../views/FrontView/CheckoutView.vue"),
 				},
 				{
+					path: "/checkout/:couponid",
+					name: "coupon",
+					component: () => import("../views/FrontView/CheckoutView.vue"),
+				},
+				{
 					path: "/blog/:blogid",
 					name: "bloginner",
 					component: () => import("../views/FrontView/BloginnerView.vue"),

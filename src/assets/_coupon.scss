@@ -1,0 +1,38 @@
+.index-coupon-main {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	width: 83%;
+	margin: auto;
+	h3 {
+		font-size: 48px;
+		text-align: center;
+		font-weight: 500px;
+		letter-spacing: 2px;
+		color: black;
+		margin-bottom: 0.6em;
+	}
+	button {
+		display: block;
+		background-color: transparent;
+		font-size: 26px;
+		font-weight: 600;
+		letter-spacing: 0.6em;
+		color: rgb(153, 78, 3);
+		outline: 1px dashed #fa0;
+		margin-bottom: 1em;
+		&:hover {
+			background-color: #fa0;
+			color: #fff;
+		}
+	}
+}
+@media (max-width: 500px) {
+	.index-coupon-main {
+		h3 {
+			font-size: 26px;
+		}
+		button {
+			font-size: 18px;
+		}
+	}
+}

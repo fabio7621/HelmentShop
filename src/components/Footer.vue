@@ -20,7 +20,9 @@
 					<div class="footer-right-copyright-txt d-flex flex-column">
 						<p><span>2024</span>&nbsp;&copy;FabioHelment</p>
 
-						<a class="d-block mt-2 ms-auto me-5" href="#"
+						<a
+							class="d-block mt-2 ms-auto me-5"
+							href="https://github.com/fabio7621"
 							><i class="bi bi-github"></i
 						></a>
 					</div>

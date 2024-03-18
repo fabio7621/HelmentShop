@@ -96,6 +96,23 @@
 							<span>${{ final_total }}</span>
 						</div>
 					</div>
+					<div class="mt-3 mb-5 d-flex">
+						<input
+							type="text"
+							class="form-control w-50"
+							v-model="coupon_code"
+							placeholder="請輸入優惠碼"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary"
+								type="button"
+								@click="addCouponCode"
+							>
+								優惠碼
+							</button>
+						</div>
+					</div>
 					<div class="section-checkout-order">
 						<div class="checkout-order-main">
 							<VeeForm
@@ -197,7 +214,7 @@
 import { mapActions, mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
 import Loadingitem from "@/components/Loadingitem.vue";
-
+import { useToastMessageStore } from "@/stores/toastMessage";
 export default {
 	data() {
 		return {
@@ -211,6 +228,7 @@ export default {
 				},
 				message: "",
 			},
+			coupon_code: "",
 		};
 	},
 	computed: {
@@ -218,6 +236,7 @@ export default {
 	},
 	methods: {
 		...mapActions(cartStore, ["getCart"]),
+		...mapActions(useToastMessageStore, ["pushMessage"]),
 		removeCartItem(id) {
 			const api = `${import.meta.env.VITE_API}api/${
 				import.meta.env.VITE_APIPATH
@@ -263,12 +282,41 @@ export default {
 					console.log("更新購物車失敗", error.response.data.message);
 				});
 		},
+		addCouponCode() {
+			const api = `${import.meta.env.VITE_API}api/${
+				import.meta.env.VITE_APIPATH
+			}/coupon`;
+			const coupon = {
+				code: this.coupon_code,
+			};
+			this.isLoading = true;
+			this.$http
+				.post(api, { data: coupon })
+				.then((response) => {
+					this.pushMessage({
+						style: "success",
+						title: "加入優惠券",
+						content: response.data.message,
+					});
+					this.getCart();
+					this.isLoading = false;
+				})
+				.catch((error) => {
+					this.isLoading = false;
+					this.pushMessage({
+						style: "danger",
+						title: "加入優惠券",
+						content: error.response.data.message,
+					});
+				});
+		},
 	},
 	components: {
 		Loadingitem,
 	},
 	mounted() {
 		this.getCart();
+		this.coupon_code = this.$route.params.couponid;
 	},
 };
 </script>
