@@ -131,7 +131,6 @@ export default {
       const api = `${import.meta.env.VITE_API}api/${
         import.meta.env.VITE_APIPATH
       }/articles?page=${page}`;
-      console.log(api);
       this.$http
         .get(api)
         .then((response) => {
