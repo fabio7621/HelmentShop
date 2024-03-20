@@ -37,8 +37,8 @@
         <h2>Blog</h2>
       </div>
       <div class="section-product-nav">
-        <a>最新消息</a>
-        <!-- <a href="#">MotoGp</a> -->
+        <a @click="getArticlestag('news')">News</a>
+        <a @click="getArticlestag('motogp')">MotoGP</a>
       </div>
       <div class="article-box row">
         <router-link
@@ -117,6 +117,7 @@
 <script>
 import Pagination from "@/components/Pagination.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
+
 export default {
   data() {
     return {
@@ -142,6 +143,24 @@ export default {
           console.log("取得文章資訊失敗", error.response.data.message);
         });
     },
+    getArticlestag(articlesTag) {
+      this.isLoading = true;
+      const api = `${import.meta.env.VITE_API}api/${
+        import.meta.env.VITE_APIPATH
+      }/articles`;
+      this.$http
+        .get(api)
+        .then((response) => {
+          const allArticles = response.data.articles;
+          this.articles = allArticles.filter(
+            (article) => article.tag[0] === articlesTag
+          );
+          this.isLoading = false;
+        })
+        .catch((error) => {
+          console.log("取得文章資訊失敗", error.response.data.message);
+        });
+    },
   },
   components: {
     Pagination,
@@ -152,5 +171,4 @@ export default {
   },
 };
 </script>
-
 <style></style>
