@@ -2,6 +2,16 @@ body {
 	font-family: "Noto Sans TC", sans-serif;
 	position: relative;
 }
+.topCartItem {
+	font-weight: 500;
+	transform: translateX(45px);
+	span {
+		font-size: 16px;
+	}
+	i {
+		font-size: 20px;
+	}
+}
 /* hb.icon */
 .menu-button-container {
 	display: none;

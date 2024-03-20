@@ -54,9 +54,12 @@
 					:key="`${key + 12}`"
 				>
 					<div class="product-item">
-						<div class="index-product-pic">
+						<router-link
+							:to="`/product/${item.id}`"
+							class="d-block index-product-pic"
+						>
 							<img :src="item.imageUrl" alt="Product Image" />
-						</div>
+						</router-link>
 						<h4 class="index-product-title">{{ item.title }}</h4>
 						<div class="index-product-price">
 							<span

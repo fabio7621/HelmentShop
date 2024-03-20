@@ -7,6 +7,15 @@
 						<img src="../assets/image/logo.png" alt="" />
 					</a>
 				</h1>
+				<div class="topCartItem d-flex align-items-center">
+					<router-link
+						to="/checkout"
+						class="nav-cartItem d-flex d-md-none align-items-center text-decoration-none text-dark"
+					>
+						<i class="bi bi-cart-fill"></i>
+						<span>({{ this.carts?.length }})</span>
+					</router-link>
+				</div>
 				<button
 					class="navbar-toggler"
 					type="button"
