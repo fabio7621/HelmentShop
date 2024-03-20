@@ -163,7 +163,7 @@ export default {
 			const { category = "" } = this.$route.query;
 			const api = `${import.meta.env.VITE_API}/api/${
 				import.meta.env.VITE_APIPATH
-			}/products?category=${category}&${page}`;
+			}/products?category=${category}&page=${page}`;
 			this.$http
 				.get(api)
 				.then((res) => {
