@@ -74,7 +74,7 @@
                 to="/"
                 class="nav-link top-navbar-logo d-md-block d-none position-relative"
               >
-                <img src="../assets/image/logo.png" alt="" />
+                <img src="../assets/image/logo.png" alt="logo pic" />
               </router-link>
             </li>
             <li class="nav-item top-navbar-item d-flex flex-column text-center">
