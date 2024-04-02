@@ -52,11 +52,10 @@ export default {
       this.$http
         .post(api)
         .then((res) => {
-          console.log(res);
           this.$router.push("/");
         })
         .catch((error) => {
-          console.log(error);
+          alert(`${error.response.data.message}`);
         });
     },
   },

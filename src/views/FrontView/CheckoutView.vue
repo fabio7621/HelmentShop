@@ -1,17 +1,17 @@
 <template>
   <VueLoading :active="isLoading" :z-index="1060">
-    <Loadingitem></Loadingitem>
+    <Loadingitem />
   </VueLoading>
   <section class="section-main-banner">
     <img
       class="d-none d-md-block w-100"
       src="../../assets/image/productbanner0005.png"
-      alt=""
+      alt="banner"
     />
     <img
       class="d-block d-md-none w-100"
       src="../../assets/image/phone-banner/banner-p05.png"
-      alt=""
+      alt="banner"
     />
   </section>
   <section class="section-bread">
@@ -19,7 +19,11 @@
       <ol class="bread-list d-flex align-items-center">
         <li class="bread-list-item">
           <div class="section-bread-pic">
-            <img width="20" src="../../assets/image/icon/home.svg" alt="" />
+            <img
+              width="20"
+              src="../../assets/image/icon/home.svg"
+              alt="homepic"
+            />
           </div>
         </li>
         <li class="bread-list-item" aria-current="page">
@@ -31,7 +35,7 @@
       <div class="section-product-main">
         <div class="section-product-title d-flex align-items-center">
           <div class="product-title-pic">
-            <img src="../../assets/image/motohead.png" alt="" />
+            <img src="../../assets/image/motohead.png" alt="title pic" />
           </div>
           <h2>購物車</h2>
         </div>
@@ -52,7 +56,7 @@
                     :to="`/product/${item.product_id}`"
                     class="d-block cart-pic"
                   >
-                    <img :src="item.product.imageUrl" />
+                    <img :src="item.product.imageUrl" alt="productImg" />
                   </router-link>
                   <p>
                     {{ item.product.title }}<br />
@@ -88,7 +92,10 @@
                     @click="removeCartItem(item.id)"
                     class="cart-del mx-auto"
                   >
-                    <img src="../../assets/image/icon/delete.svg" alt="" />
+                    <img
+                      src="../../assets/image/icon/delete.svg"
+                      alt="delreBtn"
+                    />
                   </div>
                 </td>
                 <td class="align-middle text-end">
@@ -256,7 +263,7 @@ export default {
           this.getCart();
         })
         .catch((error) => {
-          console.log(error.response.data.message);
+          alert(`${err.response.data.message}`);
         });
     },
     createOrder() {
@@ -271,7 +278,7 @@ export default {
           this.$refs.form.resetForm();
         })
         .catch((error) => {
-          console.log(error.response.data.message);
+          alert(`${err.response.data.message}`);
         });
     },
     updateCart(item) {
@@ -288,7 +295,7 @@ export default {
           this.getCart();
         })
         .catch((error) => {
-          console.log("更新購物車失敗", error.response.data.message);
+          alert(`更新購物車失敗${err.response.data.message}`);
         });
     },
     addCouponCode() {
@@ -327,7 +334,6 @@ export default {
   mounted() {
     this.getCart();
     this.coupon_code = this.$route.params.couponid;
-    console.log(this.carts);
   },
 };
 </script>

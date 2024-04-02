@@ -1,17 +1,17 @@
 <template>
   <VueLoading :active="isLoading" :z-index="1060">
-    <Loadingitem></Loadingitem>
+    <Loadingitem />
   </VueLoading>
   <section class="section-main-banner">
     <img
       class="d-none d-md-block w-100"
       src="../../assets/image/productbanner0003.png"
-      alt=""
+      alt="banner"
     />
     <img
       class="d-block d-md-none w-100"
       src="../../assets/image/phone-banner/banner-p04.png"
-      alt=""
+      alt="banner"
     />
   </section>
   <section class="section-bread">
@@ -19,7 +19,11 @@
       <ol class="bread-list d-flex align-items-center">
         <li class="bread-list-item">
           <div class="section-bread-pic">
-            <img width="20" src="../../assets/image/icon/home.svg" alt="" />
+            <img
+              width="20"
+              src="../../assets/image/icon/home.svg"
+              alt="homePic"
+            />
           </div>
         </li>
         <li class="bread-list-item" aria-current="page">
@@ -32,7 +36,7 @@
     <div class="section-product-main">
       <div class="section-product-title d-flex align-items-center">
         <div class="product-title-pic">
-          <img src="../../assets/image/motohead.png" alt="" />
+          <img src="../../assets/image/motohead.png" alt="title Pic" />
         </div>
         <h2>Blog</h2>
       </div>
@@ -140,7 +144,7 @@ export default {
           this.isLoading = false;
         })
         .catch((error) => {
-          console.log("取得文章資訊失敗", error.response.data.message);
+          alert(`取得產品資訊失敗${error.response.data.message}`);
         });
     },
     getArticlestag(articlesTag) {
@@ -158,7 +162,8 @@ export default {
           this.isLoading = false;
         })
         .catch((error) => {
-          console.log("取得文章資訊失敗", error.response.data.message);
+          this.isLoading = false;
+          alert(`取得文章資訊失敗${error.response.data.message}`);
         });
     },
   },

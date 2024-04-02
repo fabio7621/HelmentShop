@@ -24,13 +24,13 @@
         :to="`/product/${product.id}`"
       >
         <div class="index-product-pic">
-          <img class="img-fluid" :src="product.imageUrl" alt="" />
+          <img class="img-fluid" :src="product.imageUrl" alt="productPic" />
         </div>
         <h4 class="index-product-title">{{ product.title }}</h4>
         <div class="index-product-price d-flex justify-content-between">
-          <span
-            ><del>原價：{{ product.origin_price }}</del></span
-          >
+          <span>
+            <del>原價：{{ product.origin_price }} </del>
+          </span>
           <p>售價：{{ product.price }}</p>
         </div>
       </router-link>
