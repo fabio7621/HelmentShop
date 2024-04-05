@@ -163,7 +163,7 @@ export default {
         })
         .catch((error) => {
           this.isLoading = false;
-          alert(`取得文章失敗${error.response.data.message}`);
+          alert(`取得文章資訊失敗${error.response.data.message}`);
         });
     },
   },
