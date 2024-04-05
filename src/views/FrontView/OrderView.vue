@@ -36,7 +36,7 @@
     <div class="section-product-main">
       <div class="section-product-title d-flex align-items-center">
         <div class="product-title-pic">
-          <img src="./src/assets/image/motohead.png" alt="" />
+          <img src="../../assets/image/motohead.png" alt="" />
         </div>
         <h2>您的訂單</h2>
       </div>
