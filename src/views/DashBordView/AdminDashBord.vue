@@ -1,6 +1,6 @@
 <template>
   <NavbarLayout></NavbarLayout>
-  <router-view></router-view>
+  <router-view v-if="checkSuccess"></router-view>
   <ToastMessages />
 </template>
 
@@ -11,6 +11,11 @@ import { useToastMessageStore } from "@/stores/toastMessage";
 import ToastMessages from "@/components/ToastMessages.vue";
 import NavbarLayout from "@/components/NavbarLayout.vue";
 export default {
+  data() {
+    return {
+      checkSuccess: false,
+    };
+  },
   methods: {
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     checklogin() {
@@ -18,7 +23,7 @@ export default {
       this.$http
         .post(api)
         .then((res) => {
-          console.log(res.data.success);
+          this.checkSuccess = true;
           this.pushMessage({
             style: "success",
             title: "成功登入",

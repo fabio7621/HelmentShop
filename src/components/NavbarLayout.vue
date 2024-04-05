@@ -53,6 +53,7 @@ export default {
         .post(api)
         .then((res) => {
           this.$router.push("/");
+          document.cookie = `fabio20=; expires=; path=/`;
         })
         .catch((error) => {
           alert(`${error.response.data.message}`);

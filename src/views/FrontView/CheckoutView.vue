@@ -292,6 +292,7 @@ export default {
         .then((response) => {
           this.getCart();
           this.$refs.form.resetForm();
+          this.$router.push(`/myorder/${response.data.orderId}`);
         })
         .catch((error) => {
           alert(`${err.response.data.message}`);
@@ -367,7 +368,6 @@ export default {
   mounted() {
     this.getCart();
     this.coupon_code = this.$route.params.couponid;
-    console.log(this.carts.length);
   },
 };
 </script>
