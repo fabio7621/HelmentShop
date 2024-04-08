@@ -68,9 +68,9 @@
             <h4 class="index-product-title">{{ item.title }}</h4>
             <div class="index-product-price">
               <span
-                ><del>原價：{{ item.origin_price }}</del></span
+                ><del>原價：{{ item.origin_price }}元</del></span
               >
-              <p>售價：{{ item.price }}</p>
+              <p>售價：{{ item.price }}元</p>
             </div>
             <div class="product-btns d-flex justify-content-around">
               <router-link

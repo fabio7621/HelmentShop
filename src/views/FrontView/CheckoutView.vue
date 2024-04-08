@@ -62,7 +62,7 @@
                 <p>
                   {{ item.product.title }}<br />
                   <span style="font-size: 12px">{{
-                    `單價${item.product.price}/${item.product.unit}`
+                    `單價${item.product.price}元/${item.product.unit}`
                   }}</span
                   ><br />
                   <small class="text-end text-success" v-if="coupon_status"
@@ -101,7 +101,7 @@
                 </div>
               </td>
               <td class="align-middle text-end">
-                <span>{{ $filters.currency(item.final_total) }}</span>
+                <span>{{ $filters.currency(item.final_total) }}元</span>
               </td>
             </tr>
           </tbody>
@@ -117,7 +117,7 @@
           <div class="checkout-total-price d-flex">
             <p class="text-end text-success" v-if="coupon_status">優惠價</p>
             <p v-else>總金額</p>
-            <span>${{ $filters.currency(final_total) }}</span>
+            <span>${{ $filters.currency(final_total) }}元</span>
           </div>
         </div>
 
@@ -135,7 +135,7 @@
               type="button"
               @click="addCouponCode"
             >
-              優惠碼
+            使用優惠碼
             </button>
           </div>
         </div>
@@ -155,14 +155,14 @@
                 <VeeField
                   type="email"
                   name="email"
-                  class="w-100 mb-md-3 mb-3 form-control"
+                  class="w-100 mb-md-3 mb-1 form-control"
                   id="email"
                   placeholder="email"
                   rules="email|required"
                   :class="{ 'is-invalid': errors['email'] }"
                   v-model="form.user.email"
                 />
-                <ErrorMessage name="email" class="invalid-feedback" />
+                <ErrorMessage name="email" class="invalid-feedback mb-2" />
               </div>
               <div class="section-order-item">
                 <label class="mb-md-3 mb-3" for="yourname">
@@ -172,13 +172,13 @@
                   :class="{ 'is-invalid': errors['姓名'] }"
                   placeholder="收件人姓名"
                   rules="required"
-                  class="w-100 mb-md-3 mb-3 form-control"
+                  class="w-100 mb-md-3 mb-1 form-control"
                   type="text"
                   id="yourname"
                   name="姓名"
                   v-model="form.user.name"
                 />
-                <ErrorMessage name="姓名" class="invalid-feedback" />
+                <ErrorMessage name="姓名" class="invalid-feedback mb-2" />
               </div>
               <div class="section-order-item">
                 <label class="mb-md-3 mb-3" for="">
@@ -188,12 +188,12 @@
                   :class="{ 'is-invalid': errors['電話'] }"
                   placeholder="收件人電話"
                   rules="required|min:8|max:10"
-                  class="w-100 mb-md-3 mb-3 form-control"
+                  class="w-100 mb-md-3 mb-1 form-control"
                   type="tel"
                   v-model="form.user.tel"
                   name="電話"
                 />
-                <ErrorMessage name="電話" class="invalid-feedback" />
+                <ErrorMessage name="電話" class="invalid-feedback mb-2" />
               </div>
               <div class="section-order-item">
                 <label class="mb-md-3 mb-3" for="">
@@ -203,12 +203,12 @@
                   :class="{ 'is-invalid': errors['地址'] }"
                   placeholder="請輸入地址"
                   rules="required"
-                  class="w-100 mb-md-3 mb-3 form-control"
+                  class="w-100 mb-md-3 mb-1 form-control"
                   type="text"
                   v-model="form.user.address"
                   name="地址"
                 />
-                <ErrorMessage name="地址" class="invalid-feedback" />
+                <ErrorMessage name="地址" class="invalid-feedback mb-2" />
               </div>
               <div class="section-order-item">
                 <label class="mb-md-3 mb-3" for=""><span>＊</span>留言</label>

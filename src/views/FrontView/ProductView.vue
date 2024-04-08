@@ -104,9 +104,9 @@
             <h3>{{ product.title }}</h3>
             <div class="pro-inner-price d-flex">
               <span
-                ><del>{{ product.origin_price }}</del></span
+                ><del>{{ product.origin_price }}元</del></span
               >
-              <p>{{ product.price }}</p>
+              <p>{{ product.price }}元</p>
             </div>
             <div class="pro-inner-content">
               <p>

@@ -166,7 +166,7 @@
 .article-box {
   width: 83%;
   margin: auto;
-  padding-bottom: 50px;
+  // padding-bottom: 50px;
 }
 .article-item {
   outline: 1px solid #1a1311;
@@ -212,7 +212,7 @@
 .backBtn {
   display: block;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: #fa0;
+  background-color: #adb5bd;
   font-size: 20px;
   color: #fff;
   text-decoration: none;
@@ -220,8 +220,14 @@
   width: fit-content;
   margin: auto;
   border-radius: 5px;
+  margin-top: 30px;
 }
 @media (max-width: 768px) {
+  .backBtn{
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
   .product-box {
     width: 100%;
   }

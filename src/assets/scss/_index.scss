@@ -403,6 +403,12 @@ body {
   }
 
   .navbar-nav {
+    li{
+      &+li{
+        margin-top: 0.2em;
+        border-top: 1px dashed #666363;
+      }
+    }
     .nav-item {
       .dropdown-toggle {
         display: flex;
