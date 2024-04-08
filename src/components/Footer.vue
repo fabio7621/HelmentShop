@@ -21,7 +21,7 @@
             <p><span>2024</span>&nbsp;&copy;FabioHelment</p>
 
             <a
-              class="d-block mt-2 ms-auto me-5"
+              class="d-block mt-2 ms-md-auto ms-auto"
               href="https://github.com/fabio7621"
               ><i class="bi bi-github"></i
             ></a>

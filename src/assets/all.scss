@@ -1,10 +1,10 @@
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/bootstrap";
 //main css
-@import "./reset.css";
-@import "./index";
-@import "./checkout";
-@import "./product";
-@import "./productinner";
-@import "./login";
-@import "./coupon";
+@import "./scss/helper/reset.css";
+@import "./scss/index";
+@import "./scss/checkout";
+@import "./scss/product";
+@import "./scss/productinner";
+@import "./scss/login";
+@import "./scss/coupon";

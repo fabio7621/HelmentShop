@@ -56,9 +56,14 @@
           <div class="product-item">
             <router-link
               :to="`/product/${item.id}`"
-              class="d-block index-product-pic"
+              class="d-block position-relative index-product-pic"
             >
               <img :src="item.imageUrl" alt="Product Image" />
+              <div class="index-white-box position-absolute">
+               <div class="white-box-pic position-absolute">
+                <img src="../../assets/image/icon/search.svg" alt="">
+               </div>
+          </div>
             </router-link>
             <h4 class="index-product-title">{{ item.title }}</h4>
             <div class="index-product-price">

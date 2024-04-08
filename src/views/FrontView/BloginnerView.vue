@@ -51,9 +51,9 @@
             </a>
             <div class="article-content">
               <h3>{{ article.title }}</h3>
-              <p>
+              <p class="mb-0">
                 {{ article.author
-                }}<span>{{ $filters.date(article.create_at) }}</span>
+                }}&nbsp;<span>{{ $filters.date(article.create_at) }}</span>
               </p>
               <div v-html="article.content"></div>
             </div>

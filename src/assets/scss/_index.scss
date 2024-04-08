@@ -258,11 +258,33 @@ body {
           overflow: hidden;
           box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
             rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+            &:hover .index-product-pic .index-white-box{
+              display: block;
+            }
           .index-product-pic {
             margin-top: 15px;
+            overflow: hidden;
             img {
               width: 100%;
               vertical-align: middle;
+            }
+            .index-white-box{
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: #ffffff98;
+              display: none;
+              cursor: pointer;
+              .white-box-pic{
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                width: 40px;
+                img{
+                  width: 100%;
+                }
+              }
             }
           }
           h4 {
@@ -370,10 +392,10 @@ body {
       rgba(255, 255, 255, 1) 100%
     );
     position: relative;
-    padding: 20px 8.80829vw;
+    padding: 15px 6vw;
   }
   .navbar-brand {
-    width: 20.31088vw;
+    width: 17vw;
     img {
       width: 100%;
       vertical-align: middle;
