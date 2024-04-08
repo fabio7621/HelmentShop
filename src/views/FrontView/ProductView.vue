@@ -1,4 +1,7 @@
 <template>
+   <VueLoading :active="isLoading" :z-index="1060">
+    <Loadingitem />
+  </VueLoading>
   <section class="section-main-banner">
     <img
       class="d-none d-md-block w-100"
@@ -146,9 +149,7 @@
 <script>
 import { ref } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
-
 import "swiper/css";
-
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
@@ -158,6 +159,7 @@ import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 import { mapActions, mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
+import Loadingitem from "@/components/Loadingitem.vue";
 
 export default {
   data() {
@@ -177,28 +179,14 @@ export default {
       });
     },
     ...mapActions(cartStore, ["addToCart"]),
-    // addToCart(qty = 1) {
-    //   const url = `${import.meta.env.VITE_API}api/${
-    //     import.meta.env.VITE_APIPATH
-    //   }/cart`;
-    //   const cart = {
-    //     product_id: this.product.id,
-    //     qty: this.qty,
-    //   };
-    //   this.$http
-    //     .post(url, { data: cart })
-    //     .then((response) => {
-    //       console.log("ok");
-    //       this.qty = 1;
-    //     })
-    //     .catch((error) => {
-    //       console.log("false");
-    //     });
-    // },
+  },
+  computed:{
+   ...mapState(cartStore,["isLoading"]),
   },
   components: {
     Swiper,
     SwiperSlide,
+    Loadingitem
   },
   setup() {
     const thumbsSwiper = ref(null);

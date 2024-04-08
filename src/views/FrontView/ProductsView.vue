@@ -143,7 +143,7 @@
   </section>
 </template>
 <script>
-import { mapActions } from "pinia";
+import { mapActions,mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
 import Pagination from "@/components/Pagination.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
@@ -153,7 +153,6 @@ export default {
       products: [],
       pagination: {},
       categories: ["shoei", "ogk", "arai"],
-      isLoading: false,
     };
   },
   methods: {
@@ -177,6 +176,9 @@ export default {
           this.isLoading = false;
         });
     },
+  },
+  computed:{
+    ...mapState(cartStore,["isLoading"]),
   },
   watch: {
     "$route.query": {

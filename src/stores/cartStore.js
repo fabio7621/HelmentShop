@@ -8,6 +8,7 @@ export default defineStore("cartStore", {
       carts: [],
       final_total: 0,
       total: 0,
+      isLoading: false
     };
   },
   actions: {
@@ -27,6 +28,7 @@ export default defineStore("cartStore", {
         });
     },
     addToCart(id, qty = 1) {
+      this.isLoading=true;
       const url = `${import.meta.env.VITE_API}api/${
         import.meta.env.VITE_APIPATH
       }/cart`;
@@ -37,11 +39,12 @@ export default defineStore("cartStore", {
       axios
         .post(url, { data: cart })
         .then((response) => {
-          console.log("ok");
           this.getCart();
+          this.isLoading=false;
         })
         .catch((error) => {
           alert(`加入購物車失敗${error.response.data.message}`);
+          this.isLoading=false;
         });
     },
   },
