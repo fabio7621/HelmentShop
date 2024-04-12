@@ -60,10 +60,10 @@
             >
               <img :src="item.imageUrl" alt="Product Image" />
               <div class="index-white-box position-absolute">
-               <div class="white-box-pic position-absolute">
-                <img src="../../assets/image/icon/search.svg" alt="">
-               </div>
-          </div>
+                <div class="white-box-pic position-absolute">
+                  <img src="../../assets/image/icon/search.svg" alt="" />
+                </div>
+              </div>
             </router-link>
             <h4 class="index-product-title">{{ item.title }}</h4>
             <div class="index-product-price">
@@ -148,7 +148,7 @@
   </section>
 </template>
 <script>
-import { mapActions,mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
 import Pagination from "@/components/Pagination.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
@@ -182,8 +182,8 @@ export default {
         });
     },
   },
-  computed:{
-    ...mapState(cartStore,["isLoading"]),
+  computed: {
+    ...mapState(cartStore, ["isLoading"]),
   },
   watch: {
     "$route.query": {
@@ -202,4 +202,3 @@ export default {
   },
 };
 </script>
-<style scoped></style>

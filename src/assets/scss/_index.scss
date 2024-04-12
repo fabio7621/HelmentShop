@@ -258,9 +258,9 @@ body {
           overflow: hidden;
           box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
             rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-            &:hover .index-product-pic .index-white-box{
-              display: block;
-            }
+          &:hover .index-product-pic .index-white-box {
+            display: block;
+          }
           .index-product-pic {
             margin-top: 15px;
             overflow: hidden;
@@ -268,7 +268,7 @@ body {
               width: 100%;
               vertical-align: middle;
             }
-            .index-white-box{
+            .index-white-box {
               top: 0;
               left: 0;
               width: 100%;
@@ -276,12 +276,12 @@ body {
               background-color: #ffffff98;
               display: none;
               cursor: pointer;
-              .white-box-pic{
+              .white-box-pic {
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%,-50%);
+                transform: translate(-50%, -50%);
                 width: 40px;
-                img{
+                img {
                   width: 100%;
                 }
               }
@@ -403,8 +403,8 @@ body {
   }
 
   .navbar-nav {
-    li{
-      &+li{
+    li {
+      & + li {
         margin-top: 0.2em;
         border-top: 1px dashed #666363;
       }

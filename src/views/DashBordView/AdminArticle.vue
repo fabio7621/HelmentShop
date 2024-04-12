@@ -118,8 +118,9 @@ export default {
           this.isNew = false;
         })
         .catch((error) => {
-          // axios 的錯誤狀態，可參考：https://github.com/axios/axios#handling-errors
-          console.log("error", error.response, error.request, error.message);
+          alert(
+            `取得文章失敗${(error.response, error.request, error.message)}`
+          );
           this.isLoading = false;
           this.pushMessage({
             title: "取得文章資訊失敗",

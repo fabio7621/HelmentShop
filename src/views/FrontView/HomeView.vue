@@ -2,7 +2,7 @@
   <VueLoading :active="isLoading" :z-index="1060">
     <Loadingitem />
   </VueLoading>
-  <IndexBanner></IndexBanner>
+  <IndexBanner />
   <section class="index-about">
     <div class="index-about-main row">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -35,7 +35,7 @@
       </div>
     </div>
   </section>
-  <CouponSection></CouponSection>
+  <CouponSection />
   <section class="index-product">
     <div class="index-product-main">
       <IndexProductCard

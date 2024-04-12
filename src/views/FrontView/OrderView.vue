@@ -127,7 +127,6 @@ export default {
         .then((response) => {
           this.order = response.data.order;
           this.isLoading = false;
-          console.log(this.order);
         })
         .catch((error) => {
           this.isLoading = false;

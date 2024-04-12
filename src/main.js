@@ -27,8 +27,8 @@ app.use(CKEditor);
 import { date, currency } from "@/methods/filters";
 //引入另外建立的方法且在全域上用
 app.config.globalProperties.$filters = {
-	date,
-	currency,
+  date,
+  currency,
 };
 app.component("VueLoading", Loading);
 
@@ -40,15 +40,15 @@ import zhTW from "@vee-validate/i18n/dist/locale/zh_TW.json";
  * 這裡是將所有 vee-validate 的規則載入
  */
 Object.keys(AllRules).forEach((rule) => {
-	defineRule(rule, AllRules[rule]);
+  defineRule(rule, AllRules[rule]);
 });
 
 /**
  * 這裡是設定 vee-validate 的語系
  */
 configure({
-	generateMessage: localize({ zh_TW: zhTW }), // 載入繁體中文語系
-	validateOnInput: true, // 當輸入任何內容直接進行驗證
+  generateMessage: localize({ zh_TW: zhTW }), // 載入繁體中文語系
+  validateOnInput: true, // 當輸入任何內容直接進行驗證
 });
 // 設定預設語系
 setLocale("zh_TW");
