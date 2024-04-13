@@ -135,7 +135,7 @@
               type="button"
               @click="addCouponCode"
             >
-            使用優惠碼
+              使用優惠碼
             </button>
           </div>
         </div>
@@ -246,6 +246,8 @@ import { mapActions, mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
 import Loadingitem from "@/components/Loadingitem.vue";
 import { useToastMessageStore } from "@/stores/toastMessage";
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -270,9 +272,7 @@ export default {
     ...mapActions(cartStore, ["getCart"]),
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     removeCartItem(id) {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/cart/${id}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/cart/${id}`;
       this.$http
         .delete(api)
         .then((response) => {
@@ -283,9 +283,7 @@ export default {
         });
     },
     createOrder() {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/order`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/order`;
       const order = this.form;
       this.$http
         .post(api, { data: order })
@@ -299,9 +297,7 @@ export default {
         });
     },
     updateCart(item) {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/cart/${item.id}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/cart/${item.id}`;
       const cart = {
         product_id: item.product_id,
         qty: item.qty,
@@ -316,9 +312,7 @@ export default {
         });
     },
     addCouponCode() {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/coupon`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/coupon`;
       const coupon = {
         code: this.coupon_code,
       };

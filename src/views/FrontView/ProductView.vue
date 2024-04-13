@@ -1,5 +1,5 @@
 <template>
-   <VueLoading :active="isLoading" :z-index="1060">
+  <VueLoading :active="isLoading" :z-index="1060">
     <Loadingitem />
   </VueLoading>
   <section class="section-main-banner">
@@ -123,6 +123,7 @@
               aria-describedby="addon-wrapping"
               min="1"
               max="10"
+              value="1"
             />
             <span class="input-group-text" id="addon-wrapping">
               {{ product.unit }}
@@ -135,7 +136,10 @@
             >
               加入購物車
               <div class="pro-inner-btn-pic">
-                <img src="../../assets/image/icon/button_finger.svg" alt="" />
+                <img
+                  src="../../assets/image/icon/button_finger.svg"
+                  alt="button_finger"
+                />
               </div>
             </button>
           </div>
@@ -153,7 +157,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-
+const { VITE_API, VITE_APIPATH } = import.meta.env;
 // import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
@@ -171,22 +175,23 @@ export default {
   },
   methods: {
     getProduct() {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/product/${this.id}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/product/${this.id}`;
       this.$http.get(api).then((response) => {
         this.product = response.data.product;
+        if (this.product.qty) {
+          this.qty = this.product.qty;
+        }
       });
     },
     ...mapActions(cartStore, ["addToCart"]),
   },
-  computed:{
-   ...mapState(cartStore,["isLoading"]),
+  computed: {
+    ...mapState(cartStore, ["isLoading"]),
   },
   components: {
     Swiper,
     SwiperSlide,
-    Loadingitem
+    Loadingitem,
   },
   setup() {
     const thumbsSwiper = ref(null);

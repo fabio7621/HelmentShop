@@ -70,6 +70,8 @@ import Pagination from "@/components/Pagination.vue";
 import CouponModal from "@/components/CouponModal.vue";
 import DelModal from "@/components/DelModal.vue";
 
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   components: { CouponModal, DelModal, Pagination },
   props: {
@@ -101,17 +103,14 @@ export default {
         this.tempCoupon = { ...item };
       }
       this.$refs.couponModal.openModal();
-    }, //開啟優惠卷跳窗 前面帶入狀態是新增就在tempCoupon裡面新增創建日期是舊的就複製到tempCoupon
+    },
     openDelCouponModal(item) {
       this.tempCoupon = { ...item };
       const delComponent = this.$refs.delModal;
       delComponent.openModal();
-    }, //開啟刪除視窗和複製產品
+    },
     getCoupons() {
-      // this.isLoading = true;
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/coupons`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/admin/coupons`;
       this.$http
         .get(api, this.tempProduct)
         .then((res) => {
@@ -131,16 +130,12 @@ export default {
     },
     updateCoupon(tempCoupon) {
       // this.isLoading = true;
-      let api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/coupon`;
+      let api = `${VITE_API}api/${VITE_APIPATH}/admin/coupon`;
       let httpMethos = "post";
       let data = tempCoupon;
 
       if (!this.isNew) {
-        api = `${import.meta.env.VITE_API}api/${
-          import.meta.env.VITE_APIPATH
-        }/admin/coupon/${this.tempCoupon.id}`;
+        api = `${VITE_API}api/${VITE_APIPATH}/admin/coupon/${this.tempCoupon.id}`;
         httpMethos = "put";
         data = this.tempCoupon;
       }
@@ -166,9 +161,7 @@ export default {
         });
     }, //這邊也要判斷新還是舊的優惠決定post or put
     delCoupon() {
-      const api = `${import.meta.env.VITE_API}/api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/coupon/${this.tempCoupon.id}`;
+      const api = `${VITE_API}/api/${VITE_APIPATH}/admin/coupon/${this.tempCoupon.id}`;
       // this.isLoading = true;
       this.$http
         .delete(api)

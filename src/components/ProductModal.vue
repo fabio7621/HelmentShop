@@ -33,7 +33,11 @@
                   class="form-control"
                   placeholder="請輸入圖片連結"
                 />
-                <img class="img-fluid" :src="product.imageUrl" />
+                <img
+                  class="img-fluid"
+                  :src="product.imageUrl"
+                  alt="product pic"
+                />
               </div>
               <div class="mb-3">
                 <label for="customFile" class="form-label"
@@ -72,7 +76,7 @@
                       placeholder="請輸入圖片連結"
                     />
                   </div>
-                  <img class="img-fluid" :src="image" />
+                  <img class="img-fluid" :src="image" alt="pic" />
                 </div>
                 <div
                   v-if="
@@ -83,6 +87,7 @@
                   <button
                     class="btn btn-outline-primary btn-sm d-block w-100"
                     @click="product.imagesUrl.push('')"
+                    type="button"
                   >
                     新增圖片
                   </button>
@@ -91,6 +96,7 @@
                   <button
                     class="btn btn-outline-danger btn-sm d-block w-100"
                     @click="product.imagesUrl.pop()"
+                    type="button"
                   >
                     刪除圖片
                   </button>
@@ -100,6 +106,7 @@
                 <button
                   class="btn btn-outline-primary btn-sm d-block w-100"
                   @click="createImages"
+                  type="button"
                 >
                   新增圖片
                 </button>

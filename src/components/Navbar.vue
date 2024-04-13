@@ -90,12 +90,12 @@
                 <span style="color: red">カート({{ this.carts?.length }})</span>
               </router-link>
             </li>
-            <li class="nav-item top-navbar-item d-flex flex-column text-center">
+            <!-- <li class="nav-item top-navbar-item d-flex flex-column text-center">
               <router-link class="nav-link top-navbar-txt" to="/login"
                 >登入<br />
                 <span>ログイン </span></router-link
               >
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>

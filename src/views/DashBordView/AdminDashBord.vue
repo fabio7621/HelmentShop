@@ -1,5 +1,5 @@
 <template>
-  <NavbarLayout></NavbarLayout>
+  <NavbarLayout />
   <router-view v-if="checkSuccess"></router-view>
   <ToastMessages />
 </template>
@@ -10,6 +10,7 @@ import { useToastMessageStore } from "@/stores/toastMessage";
 
 import ToastMessages from "@/components/ToastMessages.vue";
 import NavbarLayout from "@/components/NavbarLayout.vue";
+
 export default {
   data() {
     return {

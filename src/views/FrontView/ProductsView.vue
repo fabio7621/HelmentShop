@@ -152,6 +152,8 @@ import { mapActions, mapState } from "pinia";
 import cartStore from "@/stores/cartStore";
 import Pagination from "@/components/Pagination.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -165,9 +167,7 @@ export default {
     getData(page = 1) {
       this.isLoading = true;
       const { category = "" } = this.$route.query;
-      const api = `${import.meta.env.VITE_API}/api/${
-        import.meta.env.VITE_APIPATH
-      }/products?category=${category}&page=${page}`;
+      const api = `${VITE_API}/api/${VITE_APIPATH}/products?category=${category}&page=${page}`;
       this.$http
         .get(api)
         .then((res) => {

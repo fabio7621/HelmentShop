@@ -85,6 +85,9 @@ import { useToastMessageStore } from "@/stores/toastMessage";
 import DelModal from "@/components/DelModal.vue";
 import OrderModal from "@/components/OrderModal.vue";
 import Pagination from "@/components/Pagination.vue";
+
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -98,9 +101,7 @@ export default {
   methods: {
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     getOrder(currentPage = 1) {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/orders?page=${currentPage}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/admin/orders?page=${currentPage}`;
       this.isLoading = true;
       this.$http
         .get(api)
@@ -123,13 +124,11 @@ export default {
       this.tempOrder = { ...item };
     },
     openDelOrderModal(item) {
-      this.tempOrder = { ...item }; //這邊選定了itemn所以跟預覽那邊依樣要複製一份到tempOder借此下方的刪除才有id近API
+      this.tempOrder = { ...item };
       this.$refs.delbox.openModal();
     },
     delOrder() {
-      const url = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/order/${this.tempOrder.id}`;
+      const url = `${VITE_API}api/${VITE_APIPATH}/admin/order/${this.tempOrder.id}`;
       this.$http.delete(url).then((res) => {
         this.$refs.delbox.hideModal();
         this.getOrder();
@@ -137,13 +136,11 @@ export default {
     },
     updatePaid(item) {
       //更新付款狀態
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/order/${item.id}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/admin/order/${item.id}`;
 
       const paid = {
         is_paid: item.is_paid,
-      }; //這個修改的API取到單一訂單之後paid夾帶這個物件去修改原本裡面的值
+      };
 
       this.$http
         .put(api, { data: paid })

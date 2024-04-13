@@ -121,6 +121,7 @@
 <script>
 import Pagination from "@/components/Pagination.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
+const { VITE_API, VITE_APIPATH } = import.meta.env;
 
 export default {
   data() {
@@ -133,9 +134,7 @@ export default {
   methods: {
     getArticles(page = 1) {
       this.isLoading = true;
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/articles?page=${page}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/articles?page=${page}`;
       this.$http
         .get(api)
         .then((response) => {
@@ -149,9 +148,7 @@ export default {
     },
     getArticlestag(articlesTag) {
       this.isLoading = true;
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/articles`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/articles`;
       this.$http
         .get(api)
         .then((response) => {

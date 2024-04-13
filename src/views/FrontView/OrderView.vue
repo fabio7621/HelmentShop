@@ -105,6 +105,7 @@
 <script>
 import { mapActions } from "pinia";
 import { useToastMessageStore } from "@/stores/toastMessage";
+const { VITE_API, VITE_APIPATH } = import.meta.env;
 
 export default {
   data() {
@@ -118,9 +119,7 @@ export default {
   methods: {
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     getOrder() {
-      const url = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/order/${this.orderId}`;
+      const url = `${VITE_API}api/${VITE_APIPATH}/order/${this.orderId}`;
       this.isLoading = true;
       this.$http
         .get(url)
@@ -138,9 +137,7 @@ export default {
         });
     },
     payOrder() {
-      const url = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/pay/${this.orderId}`;
+      const url = `${VITE_API}api/${VITE_APIPATH}/pay/${this.orderId}`;
       this.isLoading = true;
       this.$http
         .post(url)

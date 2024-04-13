@@ -11,7 +11,7 @@
             <img
               class="w-100"
               src="../../src/assets/image/ticker01.png"
-              alt=""
+              alt="優惠卷"
             />
           </router-link>
         </div>
@@ -24,7 +24,7 @@
             <img
               class="w-100"
               src="../../src/assets/image/ticket02.png"
-              alt=""
+              alt="優惠卷"
             />
           </div>
         </router-link>

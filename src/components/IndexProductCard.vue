@@ -26,9 +26,9 @@
         <div class="index-product-pic position-relative">
           <img class="img-fluid" :src="product.imageUrl" alt="productPic" />
           <div class="index-white-box position-absolute">
-               <div class="white-box-pic position-absolute">
-                <img src="../assets/image/icon/search.svg" alt="">
-               </div>
+            <div class="white-box-pic position-absolute">
+              <img src="../assets/image/icon/search.svg" alt="search pic" />
+            </div>
           </div>
         </div>
         <h4 class="index-product-title">{{ product.title }}</h4>

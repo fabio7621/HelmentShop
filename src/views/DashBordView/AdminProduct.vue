@@ -71,6 +71,9 @@ import { useToastMessageStore } from "@/stores/toastMessage";
 import Pagination from "@/components/Pagination.vue";
 import ProductModal from "@/components/ProductModal.vue";
 import DelModal from "@/components/DelModal.vue";
+
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -86,9 +89,7 @@ export default {
   methods: {
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     getData(page = 1) {
-      const api = `${import.meta.env.VITE_API}/api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/products?page=${page}`;
+      const api = `${VITE_API}/api/${VITE_APIPATH}/admin/products?page=${page}`;
       this.isLoading = true;
       this.$http
         .get(api)
@@ -135,9 +136,7 @@ export default {
     delProduct() {
       this.$http
         .delete(
-          `${import.meta.env.VITE_API}api/${
-            import.meta.env.VITE_APIPATH
-          }/admin/product/${this.catchProduct.id}`
+          `${VITE_API}api/${VITE_APIPATH}/admin/product/${this.catchProduct.id}`
         )
         .then(() => {
           this.$refs.delbox.hideModal();

@@ -64,6 +64,8 @@ import { mapActions } from "pinia";
 import { useToastMessageStore } from "@/stores/toastMessage";
 import ArticleModal from "@/components/ArticleModal.vue";
 import DelModal from "@/components/DelModal.vue";
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -82,9 +84,7 @@ export default {
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     getArticles(page = 1) {
       this.currentPage = page;
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/articles?page=${page}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/admin/articles?page=${page}`;
       this.isLoading = true;
       this.$http
         .get(api)
@@ -106,9 +106,7 @@ export default {
         });
     },
     getArticle(id) {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/article/${id}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/admin/article/${id}`;
       this.isLoading = true;
       this.$http
         .get(api)
@@ -145,16 +143,12 @@ export default {
     },
     updateArticle(item) {
       this.tempArticle = item;
-      let api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/article`;
+      let api = `${VITE_API}api/${VITE_APIPATH}/admin/article`;
       let httpMethod = "post";
       let status = "新增貼文";
       this.isLoading = true;
       if (!this.isNew) {
-        api = `${import.meta.env.VITE_API}api/${
-          import.meta.env.VITE_APIPATH
-        }/admin/article/${this.tempArticle.id}`;
+        api = `${VITE_API}api/${VITE_APIPATH}/admin/article/${this.tempArticle.id}`;
         httpMethod = "put";
         status = "更新貼文";
       }
@@ -185,9 +179,7 @@ export default {
       delComponent.openModal();
     },
     delArticle() {
-      const url = `${import.meta.env.VITE_API}/api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/article/${this.tempArticle.id}`;
+      const url = `${VITE_API}/api/${VITE_APIPATH}/admin/article/${this.tempArticle.id}`;
       this.isLoading = true;
       this.$http
         .delete(url)

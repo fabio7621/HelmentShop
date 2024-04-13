@@ -52,8 +52,9 @@
             <div class="article-content">
               <h3>{{ article.title }}</h3>
               <p class="mb-0">
-                {{ article.author
-                }}&nbsp;<span>{{ $filters.date(article.create_at) }}</span>
+                {{ article.author }}&nbsp;<span>{{
+                  $filters.date(article.create_at)
+                }}</span>
               </p>
               <div v-html="article.content"></div>
             </div>
@@ -66,6 +67,8 @@
 </template>
 
 <script>
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -75,9 +78,7 @@ export default {
   },
   methods: {
     getArticle() {
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/article/${this.id}`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/article/${this.id}`;
 
       this.$http
         .get(api)

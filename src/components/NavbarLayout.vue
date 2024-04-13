@@ -51,7 +51,7 @@ export default {
       const api = `${import.meta.env.VITE_API}logout`;
       this.$http
         .post(api)
-        .then((res) => {
+        .then(() => {
           this.$router.push("/");
           document.cookie = `fabio20=; expires=; path=/`;
         })

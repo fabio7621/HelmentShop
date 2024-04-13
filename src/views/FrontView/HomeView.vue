@@ -53,6 +53,8 @@ import Loadingitem from "@/components/Loadingitem.vue";
 import CouponSection from "@/components/CouponSection.vue";
 import { mapActions } from "pinia";
 import { useToastMessageStore } from "@/stores/toastMessage";
+const { VITE_API, VITE_APIPATH } = import.meta.env;
+
 export default {
   data() {
     return {
@@ -64,9 +66,7 @@ export default {
     ...mapActions(useToastMessageStore, ["pushMessage"]),
     getOgk() {
       this.isLoading = true;
-      const api = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/products?category=ogk`;
+      const api = `${VITE_API}api/${VITE_APIPATH}/products?category=ogk`;
       this.$http(api)
         .then((res) => {
           this.ogkProducts = res.data.products;
