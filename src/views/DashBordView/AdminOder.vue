@@ -1,5 +1,6 @@
 <template>
-  <VueLoading :active="isLoading" :z-index="1060" />
+  <div class="container">
+<VueLoading :active="isLoading" :z-index="1060" />
   <table class="table mt-4">
     <thead>
       <tr>
@@ -76,6 +77,8 @@
     @update="getOrder"
   ></DelModal>
   <pagination :pages="pagination" @emit-pages="getOrder"></pagination>
+  </div>
+  
 </template>
 
 <script>

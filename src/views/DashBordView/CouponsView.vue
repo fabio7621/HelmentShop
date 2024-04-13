@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  class="container">
     <!-- <VueLoading :active="isLoading" :z-index="1060" /> -->
     <div class="text-end mt-4">
       <button

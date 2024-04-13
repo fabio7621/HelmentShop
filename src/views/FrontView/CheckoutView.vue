@@ -134,6 +134,7 @@
               class="ms-1 btn btn-outline-secondary"
               type="button"
               @click="addCouponCode"
+              :class="{ disabled: coupon_code != ''}"
             >
               使用優惠碼
             </button>
@@ -211,7 +212,7 @@
                 <ErrorMessage name="地址" class="invalid-feedback mb-2" />
               </div>
               <div class="section-order-item">
-                <label class="mb-md-3 mb-3" for=""><span>＊</span>留言</label>
+                <label class="mb-md-3 mb-3" for="">留言</label>
                 <textarea
                   class="w-100 form-control"
                   name=""

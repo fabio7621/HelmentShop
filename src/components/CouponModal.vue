@@ -61,6 +61,7 @@
               min="0"
               v-model.number="tempCoupon.percent"
               placeholder="請輸入折扣百分比"
+              @input="restInput()"
             />
           </div>
           <div class="mb-3">
@@ -114,6 +115,13 @@ export default {
       due_date: "",
     };
   },
+  methods:{
+    restInput() {
+    if (this.tempCoupon.percent <= 0) {
+      this.tempCoupon.percent = 1; 
+    }
+   }
+ },
   emits: ["update-coupon"],
   watch: {
     coupon() {
@@ -129,5 +137,5 @@ export default {
     },
   },
   mixins: [modalMixin],
-};
+}
 </script>

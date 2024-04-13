@@ -123,7 +123,7 @@
               aria-describedby="addon-wrapping"
               min="1"
               max="10"
-              value="1"
+              @input="restInput()"
             />
             <span class="input-group-text" id="addon-wrapping">
               {{ product.unit }}
@@ -174,13 +174,15 @@ export default {
     };
   },
   methods: {
+    restInput() {
+    if (this.product.qty <= 0) {
+      this.product.qty = 1; 
+    }
+  },
     getProduct() {
       const api = `${VITE_API}api/${VITE_APIPATH}/product/${this.id}`;
       this.$http.get(api).then((response) => {
         this.product = response.data.product;
-        if (this.product.qty) {
-          this.qty = this.product.qty;
-        }
       });
     },
     ...mapActions(cartStore, ["addToCart"]),
@@ -209,6 +211,7 @@ export default {
   created() {
     this.id = this.$route.params.productId;
     this.getProduct();
+    
   },
 };
 </script>
