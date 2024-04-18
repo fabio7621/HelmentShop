@@ -134,7 +134,7 @@
               class="ms-1 btn btn-outline-secondary"
               type="button"
               @click="addCouponCode"
-              :class="{ disabled: coupon_code != ''}"
+              
             >
               使用優惠碼
             </button>
