@@ -81,6 +81,7 @@
                       id="floatingInputGroup1"
                       v-model.number="item.qty"
                       @blur="updateCart(item)"
+                      @input="restInput(item)"
                       min="0"
                     />
                     <label for="floatingInputGroup1"></label>
@@ -272,6 +273,11 @@ export default {
   methods: {
     ...mapActions(cartStore, ["getCart"]),
     ...mapActions(useToastMessageStore, ["pushMessage"]),
+    restInput(item) {
+    if (item.qty <= 0) {
+      item.qty = 1;
+    }
+   },
     removeCartItem(id) {
       const api = `${VITE_API}api/${VITE_APIPATH}/cart/${id}`;
       this.$http
