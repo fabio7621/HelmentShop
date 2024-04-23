@@ -315,18 +315,6 @@ export default {
         });
     },
   },
-  watch: {
-    //千萬千萬記得傳進來的資料要在data更新增一個容器在watch的時候賦予上去
-    product() {
-      this.tempProduct = this.product;
-      if (!this.tempProduct.imagesUrl) {
-        this.tempProduct.imagesUrl = [];
-      }
-      if (!this.tempProduct.imageUrl) {
-        this.tempProduct.imageUrl = "";
-      }
-    },
-  },
   mounted() {
     this.pModal = new Modal(this.$refs.productModal);
   },
