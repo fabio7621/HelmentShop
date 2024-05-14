@@ -102,15 +102,7 @@
                   </button>
                 </div>
               </div>
-              <div v-else>
-                <button
-                  class="btn btn-outline-primary btn-sm d-block w-100"
-                  @click="createImages"
-                  type="button"
-                >
-                  新增圖片
-                </button>
-              </div>
+             
             </div>
             <div class="col-sm-8">
               <div class="form-group mb-3">
