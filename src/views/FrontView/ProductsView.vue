@@ -106,9 +106,10 @@ const { VITE_API, VITE_APIPATH } = import.meta.env;
 export default {
   data() {
     return {
+      isLoading: false,
       products: [],
       pagination: {},
-      categories: ["Shoei", "OGK", "Arai"],
+      categories: ["shoei", "ogk", "arai"],
     };
   },
   methods: {
