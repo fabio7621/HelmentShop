@@ -3,27 +3,15 @@
     <Loadingitem />
   </VueLoading>
   <section class="section-main-banner">
-    <img
-      class="d-none d-md-block w-100"
-      src="../../assets/image/productbanner0005.png"
-      alt="banner"
-    />
-    <img
-      class="d-block d-md-none w-100"
-      src="../../assets/image/phone-banner/banner-p05.png"
-      alt="banner"
-    />
+    <img class="d-none d-md-block w-100" src="../../assets/image/productbanner0005.png" alt="banner" />
+    <img class="d-block d-md-none w-100" src="../../assets/image/phone-banner/banner-p05.png" alt="banner" />
   </section>
   <section class="section-bread">
     <div class="section-bread-main">
       <ol class="bread-list d-flex align-items-center">
         <li class="bread-list-item">
           <div class="section-bread-pic">
-            <img
-              width="20"
-              src="../../assets/image/icon/home.svg"
-              alt="homepic"
-            />
+            <img width="20" src="../../assets/image/icon/home.svg" alt="homepic" />
           </div>
         </li>
         <li class="bread-list-item" aria-current="page">
@@ -41,7 +29,7 @@
         <h2>您的訂單</h2>
       </div>
       <div class="my-5 row justify-content-center">
-        <form class="col-md-6 userOrder border" @submit.prevent="payOrder">
+        <form class="col-md-6 userOrder border bg-white" @submit.prevent="payOrder">
           <table class="table align-middle">
             <thead>
               <th>品名</th>
@@ -166,7 +154,6 @@ export default {
   padding: 1rem;
   border: 1px dashed #59565600;
   border-radius: 11px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 </style>

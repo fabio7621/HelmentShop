@@ -195,7 +195,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 33px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
