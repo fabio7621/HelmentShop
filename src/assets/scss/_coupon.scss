@@ -6,10 +6,13 @@
   h3 {
     font-size: 48px;
     text-align: center;
-    font-weight: 500px;
+    font-weight: 500;
     letter-spacing: 2px;
     color: black;
     margin-bottom: 0.6em;
+    > span {
+      font-size: 26px;
+    }
   }
   button {
     display: block;
@@ -32,6 +35,9 @@
     padding-bottom: 30px;
     h3 {
       font-size: 26px;
+      > span {
+        font-size: 18px;
+      }
     }
     button {
       font-size: 18px;

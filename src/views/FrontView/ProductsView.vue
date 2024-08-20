@@ -3,16 +3,8 @@
     <Loadingitem></Loadingitem>
   </VueLoading>
   <section class="section-main-banner">
-    <img
-      class="d-none d-md-block w-100"
-      src="../../assets/image/productbanner0001.png"
-      alt="banner"
-    />
-    <img
-      class="d-block d-md-none w-100"
-      src="../../assets/image/phone-banner/banner-p03.png"
-      alt="banner"
-    />
+    <img class="d-none d-md-block w-100" src="../../assets/image/productbanner0001.png" alt="banner" />
+    <img class="d-block d-md-none w-100" src="../../assets/image/phone-banner/banner-p03.png" alt="banner" />
   </section>
   <section class="section-bread">
     <div class="section-bread-main">
@@ -37,27 +29,16 @@
         <h2>產品資訊</h2>
       </div>
       <div class="section-product-nav">
-        <li
-          style="list-style-type: none"
-          v-for="item in categories"
-          :key="item"
-        >
+        <li style="list-style-type: none" v-for="item in categories" :key="item">
           <RouterLink :to="`/products?category=${item}`">
             {{ item }}
           </RouterLink>
         </li>
       </div>
       <div class="product-box row">
-        <div
-          class="col-12 col-md-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4"
-          v-for="(item, key) in products"
-          :key="`${key + 12}`"
-        >
+        <div class="col-12 col-md-6 col-lg-4 mb-3 mb-md-4 p-2 p-md-4" v-for="(item, key) in products" :key="`${key + 12}`">
           <div class="product-item">
-            <router-link
-              :to="`/product/${item.id}`"
-              class="d-block position-relative index-product-pic"
-            >
+            <router-link :to="`/product/${item.id}`" class="d-block position-relative index-product-pic">
               <img :src="item.imageUrl" alt="Product Image" />
               <div class="index-white-box position-absolute">
                 <div class="white-box-pic position-absolute">
@@ -73,18 +54,10 @@
               <p>售價：{{ item.price }}元</p>
             </div>
             <div class="product-btns d-flex justify-content-around">
-              <router-link
-                :to="`/product/${item.id}`"
-                class="d-block w-50 h-100"
-              >
+              <router-link :to="`/product/${item.id}`" class="d-block w-50 h-100">
                 <i class="bi bi-search"></i>
               </router-link>
-              <button
-                style="background-color: none; border: none"
-                @click="addToCart(item.id)"
-                class="d-block w-50 h-100"
-                href=""
-              >
+              <button style="background-color: none; border: none" @click="addToCart(item.id)" class="d-block w-50 h-100" href="">
                 <i class="bi bi-cart"></i>
               </button>
             </div>
@@ -93,37 +66,18 @@
       </div>
       <nav aria-label="Page d-flex navigation example pt-3">
         <ul class="pagination justify-content-center">
-          <li
-            class="page-item"
-            :class="{ disabled: pagination.current_page === 1 }"
-          >
-            <a
-              class="page-link"
-              href="#"
-              aria-label="Previous"
-              @click.prevent="getData(pagination.current_page - 1)"
-            >
+          <li class="page-item" :class="{ disabled: pagination.current_page === 1 }">
+            <a class="page-link" href="#" aria-label="Previous" @click.prevent="getData(pagination.current_page - 1)">
               <span aria-hidden="true">
                 <i class="bi bi-caret-left-fill"></i>
               </span>
             </a>
           </li>
-          <li
-            v-for="(item, index) in pagination.total_pages"
-            :key="index"
-            class="page-item"
-            :class="{ active: item === pagination.current_page }"
-          >
+          <li v-for="(item, index) in pagination.total_pages" :key="index" class="page-item" :class="{ active: item === pagination.current_page }">
             <span class="page-link" v-if="item === pagination.current_page">
               {{ item }}
             </span>
-            <a
-              class="page-link"
-              href="#"
-              v-else
-              @click.prevent="getData(item)"
-              >{{ item }}</a
-            >
+            <a class="page-link" href="#" v-else @click.prevent="getData(item)">{{ item }}</a>
           </li>
           <li
             class="page-item"
@@ -131,12 +85,7 @@
               disabled: pagination.current_page === pagination.total_pages,
             }"
           >
-            <a
-              class="page-link"
-              href="#"
-              aria-label="Next"
-              @click.prevent="getData(pagination.current_page + 1)"
-            >
+            <a class="page-link" href="#" aria-label="Next" @click.prevent="getData(pagination.current_page + 1)">
               <span aria-hidden="true">
                 <i class="bi bi-caret-right-fill"></i>
               </span>
@@ -159,7 +108,7 @@ export default {
     return {
       products: [],
       pagination: {},
-      categories: ["shoei", "ogk", "arai"],
+      categories: ["Shoei", "OGK", "Arai"],
     };
   },
   methods: {

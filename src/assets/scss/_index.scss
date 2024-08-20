@@ -1,6 +1,7 @@
 body {
   font-family: "Noto Sans TC", sans-serif;
   position: relative;
+  background-color: rgb(238, 236, 231);
 }
 .topCartItem {
   font-weight: 500;
@@ -79,15 +80,10 @@ body {
 //hb-setting-end
 //440 254
 .navbar {
-  background: linear-gradient(
-    0deg,
-    rgba(238, 236, 231, 1) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
+  background: linear-gradient(0deg, rgba(238, 236, 231, 1) 0%, rgba(255, 255, 255, 1) 100%);
   position: relative;
   padding: 12px 8.80829vw;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 .navbar-brand {
   width: 100px;
@@ -191,9 +187,8 @@ body {
     background-color: #fa0;
     color: #fff;
     transform: translateY(-6px);
-    box-shadow: rgba(240, 46, 170, 0.4) -5px 5px,
-      rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px,
-      rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+    box-shadow: rgba(240, 46, 170, 0.4) -5px 5px, rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px, rgba(240, 46, 170, 0.1) -20px 20px,
+      rgba(240, 46, 170, 0.05) -25px 25px;
   }
 }
 .index-about-main {
@@ -256,8 +251,7 @@ body {
           background-color: #f7f5f5;
           border-radius: 22px;
           overflow: hidden;
-          box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-            rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
           &:hover .index-product-pic .index-white-box {
             display: block;
           }
@@ -386,11 +380,7 @@ body {
 }
 @media (max-width: 992px) {
   .navbar {
-    background: linear-gradient(
-      0deg,
-      rgba(238, 236, 231, 1) 0%,
-      rgba(255, 255, 255, 1) 100%
-    );
+    background: linear-gradient(0deg, rgba(238, 236, 231, 1) 0%, rgba(255, 255, 255, 1) 100%);
     position: relative;
     padding: 15px 6vw;
   }
