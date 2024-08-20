@@ -1,30 +1,11 @@
-後台:https://fabio7621.github.io/HelmentShop/#/login
-# helmentshop
+#安全帽店商網站
+Vue3 option api + Vite
+restful api串接
 
-This template should help get you started developing with Vue 3 in Vite.
+後台:https://fabio7621.github.io/HelmentShop/#/login<br/>
+如需要請在求職網站私訊詢問<br/>
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+履歷:https://www.cakeresume.com/d6200121a<br/>
+📫e-maill:d6200121a@gmail.com
+LINE:vida0701<br/>
+Phone:0932885689
