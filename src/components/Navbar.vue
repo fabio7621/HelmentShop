@@ -8,12 +8,9 @@
           </a>
         </h1>
         <div class="topCartItem d-flex align-items-center">
-          <router-link
-            to="/checkout"
-            class="nav-cartItem d-flex d-md-none align-items-center text-decoration-none text-dark"
-          >
+          <router-link to="/checkout" class="nav-cartItem d-flex d-md-none align-items-center text-decoration-none text-dark">
             <i class="bi bi-cart-fill"></i>
-            <span>({{ this.carts?.length }})</span>
+            <span>({{ carts?.length }})</span>
           </router-link>
         </div>
         <button
@@ -35,59 +32,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav flex-wrap mx-auto">
             <li class="nav-item top-navbar-item" style="border-top: none">
-              <router-link
-                class="nav-link top-navbar-txt d-flex flex-column text-center"
-                to="/about"
-                >關於我<br /><span>私について</span>
-              </router-link>
+              <router-link class="nav-link top-navbar-txt d-flex flex-column text-center" to="/about">關於我<br /><span>私について</span> </router-link>
             </li>
             <li class="nav-item dropdown">
-              <a
-                class="nav-link top-navbar-item d-flex flex-column text-center dropdown-toggle"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <a class="nav-link top-navbar-item d-flex flex-column text-center dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 產品介紹<br />
                 <span>製品紹介</span>
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <router-link
-                    to="/products"
-                    class="drop-item dropdown-item"
-                    href="#"
-                    >全部製品</router-link
-                  >
+                  <router-link to="/products" class="drop-item dropdown-item" href="#">全部製品</router-link>
                 </li>
                 <li v-for="item in categories" :key="item">
-                  <router-link
-                    :to="`/products?category=${item}`"
-                    class="drop-item dropdown-item"
-                    >{{ item }}
-                  </router-link>
+                  <router-link :to="`/products?category=${item}`" class="drop-item dropdown-item">{{ item }} </router-link>
                 </li>
               </ul>
             </li>
             <li class="nav-item top-navbar-item">
-              <router-link
-                to="/"
-                class="nav-link top-navbar-logo d-md-block d-none position-relative"
-              >
+              <router-link to="/" class="nav-link top-navbar-logo d-md-block d-none position-relative">
                 <img src="../assets/image/logo.png" alt="logo pic" />
               </router-link>
             </li>
             <li class="nav-item top-navbar-item d-flex flex-column text-center">
-              <router-link to="/blog" class="nav-link top-navbar-txt"
-                >部落格<br /><span>ブログ</span></router-link
-              >
+              <router-link to="/blog" class="nav-link top-navbar-txt">部落格<br /><span>ブログ</span></router-link>
             </li>
             <li class="nav-item top-navbar-item d-flex flex-column text-center">
-              <router-link
-                class="nav-link top-navbar-txt position-relative"
-                to="/checkout"
+              <router-link class="nav-link top-navbar-txt position-relative" to="/checkout"
                 >購物車<br />
-                <span style="color: red">カート({{ this.carts?.length }})</span>
+                <span style="color: red">カート({{ carts?.length }})</span>
               </router-link>
             </li>
             <!-- <li class="nav-item top-navbar-item d-flex flex-column text-center">
