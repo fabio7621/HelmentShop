@@ -9,7 +9,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@ckeditor/ckeditor5-build-classic": "^41.2.0",
+		"@ckeditor/ckeditor5-build-classic": "^43.1.1",
 		"@ckeditor/ckeditor5-vue": "^5.1.0",
 		"@popperjs/core": "^2.11.8",
 		"@vee-validate/i18n": "^4.12.6",
