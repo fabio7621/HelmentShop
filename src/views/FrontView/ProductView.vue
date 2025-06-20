@@ -93,7 +93,6 @@
               class="form-control"
               aria-label="Userqty"
               aria-describedby="addon-wrapping"
-              value="1"
               min="1"
               max="10"
               @input="restInput()"
