@@ -30,7 +30,6 @@ app.config.globalProperties.$filters = {
   date,
   currency,
 };
-app.component("VueLoading", Loading);
 
 import { Form, Field, ErrorMessage, defineRule, configure } from "vee-validate";
 import * as AllRules from "@vee-validate/rules";
