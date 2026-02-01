@@ -19,7 +19,6 @@
         <div class="footer-right-copyright mt-auto">
           <div class="footer-right-copyright-txt d-flex flex-column">
             <p><span>2024</span>&nbsp;&copy;FabioHelment</p>
-
             <a
               class="d-block mt-2 ms-md-auto ms-auto"
               href="https://github.com/fabio7621"
@@ -34,3 +33,6 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+</script>

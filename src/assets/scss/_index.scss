@@ -3,6 +3,11 @@ body {
   position: relative;
   background-color: rgb(238, 236, 231);
 }
+/* 確保 Navbar 在最上層，連結可點擊 */
+.top-nav {
+  z-index: 1030;
+  position: relative;
+}
 .topCartItem {
   font-weight: 500;
   transform: translateX(45px);
@@ -102,8 +107,12 @@ body {
     .dropdown-toggle::after {
       content: none;
     }
+    /* 確保 router-link 與 a 可點擊 */
+    .nav-link,
     > a {
       color: black;
+      cursor: pointer;
+      text-decoration: none;
       font-size: 1.139896vw;
       font-weight: 400;
       letter-spacing: 2.2px;
@@ -128,10 +137,12 @@ body {
         &:hover {
           background-color: #002a89;
         }
-        &:hover a {
+        &:hover a,
+        &:hover .dropdown-item {
           color: #fff;
         }
-        > a {
+        > a,
+        .dropdown-item {
           font-size: 1.042vw; //20
           font-weight: 400;
           letter-spacing: 0.1em;
@@ -139,6 +150,7 @@ body {
           text-decoration: none;
           color: black;
           background-color: transparent;
+          cursor: pointer;
         }
       }
     }

@@ -5,6 +5,10 @@
     </div>
   </div>
 </template>
+
+<script setup>
+</script>
+
 <style scoped>
 .loading-wrap {
   position: absolute;

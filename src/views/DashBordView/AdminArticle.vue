@@ -22,7 +22,7 @@
           <td>{{ article.title }}</td>
           <td>{{ article.author }}</td>
           <td>{{ article.description }}</td>
-          <td>{{ $filters.date(article.create_at) }}</td>
+          <td>{{ formatDate(article.create_at) }}</td>
           <td>
             <span v-if="article.isPublic">已上架</span>
             <span v-else>未上架</span>
@@ -49,163 +49,174 @@
       </tbody>
     </table>
     <ArticleModal
-      ref="articleModal"
+      ref="articleModalRef"
       :article="tempArticle"
       :is-new="isNew"
       @update-article="updateArticle"
-    >
-    </ArticleModal>
-    <DelModal :item="tempArticle" ref="delModal" @del-item="delArticle" />
+    />
+    <DelModal :item="tempArticle" ref="delModalRef" @del-item="delArticle" />
   </div>
 </template>
 
-<script>
-import { mapActions } from "pinia";
+<script setup>
+import { ref, reactive, onMounted } from "vue";
+import axios from "axios";
 import { useToastMessageStore } from "@/stores/toastMessage";
+import { useFilters } from "@/composables/useFilters";
 import ArticleModal from "@/components/ArticleModal.vue";
 import DelModal from "@/components/DelModal.vue";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
 
-export default {
-  data() {
-    return {
-      articles: [],
-      isLoading: false,
-      isNew: false,
-      tempArticle: {},
-      currentPage: 1,
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
+
+const toastStore = useToastMessageStore();
+const { date: formatDate } = useFilters();
+const articleModalRef = ref(null);
+const delModalRef = ref(null);
+
+const articles = ref([]);
+const isLoading = ref(false);
+const isNew = ref(false);
+const tempArticle = ref({});
+const currentPage = ref(1);
+
+function getArticles(page) {
+  const pageNum = page || 1;
+  currentPage.value = pageNum;
+  const api = `${VITE_API}api/${VITE_APIPATH}/admin/articles?page=${pageNum}`;
+  isLoading.value = true;
+  axios
+    .get(api)
+    .then((response) => {
+      isLoading.value = false;
+      if (response.data.success) {
+        articles.value = response.data.articles;
+      }
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "取得文章資訊失敗";
+      alert(message);
+      isLoading.value = false;
+      toastStore.pushMessage({
+        title: "取得文章資訊失敗",
+        style: "danger",
+        content: message,
+      });
+    });
+}
+
+function getArticle(id) {
+  const api = `${VITE_API}api/${VITE_APIPATH}/admin/article/${id}`;
+  isLoading.value = true;
+  axios
+    .get(api)
+    .then((response) => {
+      isLoading.value = false;
+      openModal(false, response.data.article);
+      isNew.value = false;
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "取得文章失敗";
+      alert(message);
+      isLoading.value = false;
+      toastStore.pushMessage({
+        title: "取得文章資訊失敗",
+        style: "danger",
+        content: message,
+      });
+    });
+}
+
+function openModal(newMode, item) {
+  if (newMode) {
+    tempArticle.value = {
+      isPublic: false,
+      create_at: new Date().getTime() / 1000,
+      tag: [],
     };
-  },
-  components: {
-    ArticleModal,
-    DelModal,
-  },
-  methods: {
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    getArticles(page = 1) {
-      this.currentPage = page;
-      const api = `${VITE_API}api/${VITE_APIPATH}/admin/articles?page=${page}`;
-      this.isLoading = true;
-      this.$http
-        .get(api)
-        .then((response) => {
-          this.isLoading = false;
-          if (response.data.success) {
-            this.articles = response.data.articles;
-            this.pagination = response.data.pagination;
-          }
-        })
-        .catch((error) => {
-          alert(`${error.response.data.message}`);
-          this.isLoading = false;
-          this.pushMessage({
-            title: "取得文章資訊失敗",
-            style: "danger",
-            content: error.response.data.message,
-          });
-        });
-    },
-    getArticle(id) {
-      const api = `${VITE_API}api/${VITE_APIPATH}/admin/article/${id}`;
-      this.isLoading = true;
-      this.$http
-        .get(api)
-        .then((response) => {
-          this.isLoading = false;
-          this.openModal(false, response.data.article);
-          this.isNew = false;
-        })
-        .catch((error) => {
-          alert(
-            `取得文章失敗${(error.response, error.request, error.message)}`
-          );
-          this.isLoading = false;
-          this.pushMessage({
-            title: "取得文章資訊失敗",
-            style: "danger",
-            content: error.response.data.message,
-          });
-        });
-    },
-    openModal(isNew, item) {
-      if (isNew) {
-        this.tempArticle = {
-          isPublic: false,
-          create_at: new Date().getTime() / 1000,
-          tag: [],
-        };
-        this.isNew = true;
-      } else {
-        this.tempArticle = { ...item };
-        this.isNew = false;
-      }
-      this.$refs.articleModal.openModal();
-    },
-    updateArticle(item) {
-      this.tempArticle = item;
-      let api = `${VITE_API}api/${VITE_APIPATH}/admin/article`;
-      let httpMethod = "post";
-      let status = "新增貼文";
-      this.isLoading = true;
-      if (!this.isNew) {
-        api = `${VITE_API}api/${VITE_APIPATH}/admin/article/${this.tempArticle.id}`;
-        httpMethod = "put";
-        status = "更新貼文";
-      }
-      const articleComponent = this.$refs.articleModal;
-      this.$http[httpMethod](api, { data: this.tempArticle })
-        .then((response) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "success",
-            title: status,
-            content: response.data.message,
-          });
-          articleComponent.hideModal();
-          this.getArticles(this.currentPage);
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: status,
-            content: error.response.data.message,
-          });
-        });
-    },
-    openDelArticleModal(item) {
-      this.tempArticle = { ...item };
-      const delComponent = this.$refs.delModal;
-      delComponent.openModal();
-    },
-    delArticle() {
-      const url = `${VITE_API}/api/${VITE_APIPATH}/admin/article/${this.tempArticle.id}`;
-      this.isLoading = true;
-      this.$http
-        .delete(url)
-        .then((response) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "success",
-            title: "刪除貼文",
-            content: response.data.message,
-          });
-          const delComponent = this.$refs.delModal;
-          delComponent.hideModal();
-          this.getArticles(this.currentPage);
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "刪除貼文",
-            content: error.response.data.message,
-          });
-        });
-    },
-  },
-  created() {
-    this.getArticles();
-  },
-};
+    isNew.value = true;
+  } else if (item) {
+    tempArticle.value = { ...item };
+    isNew.value = false;
+  }
+  articleModalRef.value.openModal();
+}
+
+function updateArticle(item) {
+  tempArticle.value = item;
+  let api = `${VITE_API}api/${VITE_APIPATH}/admin/article`;
+  let httpMethod = "post";
+  let status = "新增貼文";
+  isLoading.value = true;
+
+  if (!isNew.value) {
+    api = `${VITE_API}api/${VITE_APIPATH}/admin/article/${tempArticle.value.id}`;
+    httpMethod = "put";
+    status = "更新貼文";
+  }
+
+  axios[httpMethod](api, { data: tempArticle.value })
+    .then((response) => {
+      isLoading.value = false;
+      toastStore.pushMessage({
+        style: "success",
+        title: status,
+        content: response.data.message,
+      });
+      articleModalRef.value.hideModal();
+      getArticles(currentPage.value);
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "操作失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: status,
+        content: message,
+      });
+    });
+}
+
+function openDelArticleModal(item) {
+  tempArticle.value = { ...item };
+  delModalRef.value.openModal();
+}
+
+function delArticle() {
+  const url = `${VITE_API}/api/${VITE_APIPATH}/admin/article/${tempArticle.value.id}`;
+  isLoading.value = true;
+  axios
+    .delete(url)
+    .then((response) => {
+      isLoading.value = false;
+      toastStore.pushMessage({
+        style: "success",
+        title: "刪除貼文",
+        content: response.data.message,
+      });
+      delModalRef.value.hideModal();
+      getArticles(currentPage.value);
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "刪除失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "刪除貼文",
+        content: message,
+      });
+    });
+}
+
+onMounted(() => {
+  getArticles();
+});
 </script>

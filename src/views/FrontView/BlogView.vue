@@ -118,58 +118,60 @@
   </section>
 </template>
 
-<script>
-import Pagination from "@/components/Pagination.vue";
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
 import Loadingitem from "@/components/Loadingitem.vue";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
 
-export default {
-  data() {
-    return {
-      articles: [],
-      pagination: {},
-      isLoading: false,
-    };
-  },
-  methods: {
-    getArticles(page = 1) {
-      this.isLoading = true;
-      const api = `${VITE_API}api/${VITE_APIPATH}/articles?page=${page}`;
-      this.$http
-        .get(api)
-        .then((response) => {
-          this.articles = response.data.articles;
-          this.pagination = response.data.pagination;
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          alert(`取得產品資訊失敗${error.response.data.message}`);
-        });
-    },
-    getArticlestag(articlesTag) {
-      this.isLoading = true;
-      const api = `${VITE_API}api/${VITE_APIPATH}/articles`;
-      this.$http
-        .get(api)
-        .then((response) => {
-          const allArticles = response.data.articles;
-          this.articles = allArticles.filter(
-            (article) => article.tag[0] === articlesTag
-          );
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          alert(`取得文章資訊失敗${error.response.data.message}`);
-        });
-    },
-  },
-  components: {
-    Pagination,
-    Loadingitem,
-  },
-  mounted() {
-    this.getArticles();
-  },
-};
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
+
+const articles = ref([]);
+const pagination = ref({});
+const isLoading = ref(false);
+
+function getArticles(page) {
+  const pageNum = page || 1;
+  isLoading.value = true;
+  const api = `${VITE_API}api/${VITE_APIPATH}/articles?page=${pageNum}`;
+  axios
+    .get(api)
+    .then((response) => {
+      articles.value = response.data.articles;
+      pagination.value = response.data.pagination;
+      isLoading.value = false;
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "取得產品資訊失敗";
+      alert(message);
+      isLoading.value = false;
+    });
+}
+
+function getArticlestag(articlesTag) {
+  isLoading.value = true;
+  const api = `${VITE_API}api/${VITE_APIPATH}/articles`;
+  axios
+    .get(api)
+    .then((response) => {
+      const allArticles = response.data.articles;
+      articles.value = allArticles.filter(
+        (article) => article.tag && article.tag[0] === articlesTag
+      );
+      isLoading.value = false;
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "取得文章資訊失敗";
+      alert(message);
+      isLoading.value = false;
+    });
+}
+
+onMounted(() => {
+  getArticles();
+});
 </script>

@@ -48,112 +48,108 @@
         </tr>
       </tbody>
     </table>
-    <pagination :pages="pagination" @emit-pages="getData"></pagination>
-    <product-modal
-      ref="productbox"
+    <Pagination :pages="pagination" @emit-pages="getData" />
+    <ProductModal
+      ref="productboxRef"
       :product="catchProduct"
       :is-new="isNew"
       @update="getData"
-    ></product-modal>
+    />
     <DelModal
       @del-item="delProduct"
-      ref="delbox"
+      ref="delboxRef"
       :item="catchProduct"
-      @update="getData"
-    ></DelModal>
+    />
   </div>
 </template>
 
-<script>
-import { mapActions } from "pinia";
+<script setup>
+import { ref, reactive, onMounted } from "vue";
+import axios from "axios";
 import { useToastMessageStore } from "@/stores/toastMessage";
-
 import Pagination from "@/components/Pagination.vue";
 import ProductModal from "@/components/ProductModal.vue";
 import DelModal from "@/components/DelModal.vue";
 
-const { VITE_API, VITE_APIPATH } = import.meta.env;
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
 
-export default {
-  data() {
-    return {
-      products: [],
-      catchProduct: {
-        imagesUrl: [],
-      },
-      isNew: false,
-      pagination: {},
-      isLoading: false,
-    };
-  },
-  methods: {
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    getData(page = 1) {
-      const api = `${VITE_API}/api/${VITE_APIPATH}/admin/products?page=${page}`;
-      this.isLoading = true;
-      this.$http
-        .get(api)
-        .then((res) => {
-          const { products, pagination } = res.data;
-          this.products = products;
-          this.pagination = pagination;
-          this.isLoading = false;
-          this.pushMessage({
-            style: "success",
-            title: "成功取得產品資訊",
-            content: res.data.message,
-          });
-        })
-        .catch((err) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "取得產品資訊失敗",
-            content: err.response.data.message,
-          });
-        });
-    },
-    openModal(isNew, item) {
-      if (isNew === "new") {
-        this.catchProduct = {
-          imagesUrl: [],
-        };
-        this.isNew = true;
-        this.$refs.productbox.openM();
-      } else if (isNew === "edit") {
-        this.catchProduct = { ...item };
-        this.isNew = false;
-        this.$refs.productbox.openM();
-      } else if (isNew === "delete") {
-        this.catchProduct = { ...item };
-        this.$refs.delbox.openCloseModal();
-      }
-    },
-    openDelModal(item) {
-      this.catchProduct = { ...item };
-      this.$refs.delbox.openModal();
-    },
-    delProduct() {
-      this.$http
-        .delete(
-          `${VITE_API}api/${VITE_APIPATH}/admin/product/${this.catchProduct.id}`
-        )
-        .then(() => {
-          this.$refs.delbox.hideModal();
-          this.getData();
-        })
-        .catch((err) => {
-          alert(err.response.data.message);
-        });
-    },
-  },
-  components: {
-    Pagination,
-    ProductModal,
-    DelModal,
-  },
-  created() {
-    this.getData();
-  },
-};
+const toastStore = useToastMessageStore();
+const productboxRef = ref(null);
+const delboxRef = ref(null);
+
+const products = ref([]);
+const catchProduct = reactive({
+  imagesUrl: [],
+});
+const isNew = ref(false);
+const pagination = ref({});
+const isLoading = ref(false);
+
+function getData(page) {
+  const pageNum = page || 1;
+  const api = `${VITE_API}/api/${VITE_APIPATH}/admin/products?page=${pageNum}`;
+  isLoading.value = true;
+  axios
+    .get(api)
+    .then((res) => {
+      products.value = res.data.products;
+      pagination.value = res.data.pagination;
+      isLoading.value = false;
+      toastStore.pushMessage({
+        style: "success",
+        title: "成功取得產品資訊",
+        content: res.data.message,
+      });
+    })
+    .catch((err) => {
+      isLoading.value = false;
+      const message = err.response && err.response.data
+        ? err.response.data.message
+        : "取得產品資訊失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "取得產品資訊失敗",
+        content: message,
+      });
+    });
+}
+
+function openModal(mode, item) {
+  if (mode === "new") {
+    catchProduct.imagesUrl = [];
+    Object.assign(catchProduct, { imagesUrl: [] });
+    isNew.value = true;
+    productboxRef.value.openM();
+  } else if (mode === "edit" && item) {
+    Object.assign(catchProduct, { ...item });
+    isNew.value = false;
+    productboxRef.value.openM();
+  }
+}
+
+function openDelModal(item) {
+  Object.assign(catchProduct, { ...item });
+  delboxRef.value.openModal();
+}
+
+function delProduct() {
+  const api = `${VITE_API}api/${VITE_APIPATH}/admin/product/${catchProduct.id}`;
+  axios
+    .delete(api)
+    .then(() => {
+      delboxRef.value.hideModal();
+      getData();
+    })
+    .catch((err) => {
+      const message = err.response && err.response.data
+        ? err.response.data.message
+        : "刪除失敗";
+      alert(message);
+    });
+}
+
+onMounted(() => {
+  getData();
+});
 </script>

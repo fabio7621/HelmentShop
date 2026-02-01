@@ -41,15 +41,17 @@
   </nav>
 </template>
 
-<script>
-export default {
-  props: ["pages"],
-  methods: {
-    emitPages(item) {
-      this.$emit("emit-pages", item);
-    },
+<script setup>
+defineProps({
+  pages: {
+    type: Object,
+    required: true,
   },
-};
-</script>
+});
 
-<style></style>
+const emit = defineEmits(["emit-pages"]);
+
+function emitPages(item) {
+  emit("emit-pages", item);
+}
+</script>

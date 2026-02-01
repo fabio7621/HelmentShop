@@ -70,20 +70,15 @@
             </swiper-slide>
           </swiper>
         </div>
-        <!-- 加入尋價車 -->
         <div class="col-12 col-md-6 d-flex flex-column">
           <div class="pro-inner-txt">
             <h3>{{ product.title }}</h3>
             <div class="pro-inner-price d-flex">
-              <span
-                ><del>{{ product.origin_price }}元</del></span
-              >
+              <span><del>{{ product.origin_price }}元</del></span>
               <p>{{ product.price }}元</p>
             </div>
             <div class="pro-inner-content">
-              <p>
-                {{ product.description }}
-              </p>
+              <p>{{ product.description }}</p>
             </div>
           </div>
           <div class="input-group flex-nowrap">
@@ -95,14 +90,14 @@
               aria-describedby="addon-wrapping"
               min="1"
               max="10"
-              @input="restInput()"
+              @input="restInput"
             />
             <span class="input-group-text" id="addon-wrapping">
               {{ product.unit }}
             </span>
           </div>
           <div class="pro-inner-btn">
-            <button @click.prevent="addToCart(product.id, product.qty)" class="d-flex justify-content-center align-items-center">
+            <button @click.prevent="handleAddToCart" class="d-flex justify-content-center align-items-center">
               加入購物車
               <div class="pro-inner-btn-pic">
                 <img src="../../assets/image/icon/button_finger.svg" alt="button_finger" />
@@ -116,69 +111,60 @@
   </section>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
-// import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-
-import { mapActions, mapState } from "pinia";
-import cartStore from "@/stores/cartStore";
+import { useCartStore } from "@/stores/cartStore";
 import Loadingitem from "@/components/Loadingitem.vue";
 
-export default {
-  data() {
-    return {
-      product: {},
-      id: "",
-      qty: 1,
-    };
-  },
-  methods: {
-    restInput() {
-      if (this.product.qty <= 0) {
-        this.product.qty = 1;
-      }
-    },
-    getProduct() {
-      const api = `${VITE_API}api/${VITE_APIPATH}/product/${this.id}`;
-      this.$http.get(api).then((response) => {
-        this.product = response.data.product;
-      });
-    },
-    ...mapActions(cartStore, ["addToCart"]),
-  },
-  computed: {
-    ...mapState(cartStore, ["isLoading"]),
-  },
-  components: {
-    Swiper,
-    SwiperSlide,
-    Loadingitem,
-  },
-  setup() {
-    const thumbsSwiper = ref(null);
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
 
-    const setThumbsSwiper = (swiper) => {
-      thumbsSwiper.value = swiper;
-    };
+const route = useRoute();
+const cartStore = useCartStore();
 
-    return {
-      thumbsSwiper,
-      setThumbsSwiper,
-      modules: [FreeMode, Navigation, Thumbs],
-    };
-  },
-  created() {
-    this.id = this.$route.params.productId;
-    this.getProduct();
-  },
-};
+const product = ref({});
+const thumbsSwiper = ref(null);
+
+const modules = [FreeMode, Navigation, Thumbs];
+
+const isLoading = computed(() => cartStore.isLoading);
+
+const productId = computed(() => route.params.productId);
+
+function setThumbsSwiper(swiper) {
+  thumbsSwiper.value = swiper;
+}
+
+function restInput() {
+  if (product.value.qty && product.value.qty <= 0) {
+    product.value.qty = 1;
+  }
+}
+
+function getProduct() {
+  const api = `${VITE_API}api/${VITE_APIPATH}/product/${productId.value}`;
+  axios.get(api).then((response) => {
+    product.value = response.data.product;
+  });
+}
+
+function handleAddToCart() {
+  const id = product.value.id;
+  const qty = product.value.qty || 1;
+  cartStore.addToCart(id, qty);
+}
+
+onMounted(() => {
+  getProduct();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -186,7 +172,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 .swiper-slide {
   text-align: center;
   font-size: 18px;
@@ -197,7 +182,6 @@ export default {
   border-radius: 10px;
   overflow: hidden;
 }
-
 .swiper-slide img {
   display: block;
   width: 100%;
@@ -210,33 +194,27 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-
 .swiper-slide {
   background-size: cover;
   background-position: center;
 }
-
 .mySwiper2 {
   height: 80%;
   width: 100%;
 }
-
 .mySwiper {
   height: 20%;
   box-sizing: border-box;
   padding: 10px 0;
 }
-
 .mySwiper .swiper-slide {
   width: 25%;
   height: 100%;
   opacity: 0.4;
 }
-
 .mySwiper .swiper-slide-thumb-active {
   opacity: 1;
 }
-
 .swiper-slide img {
   display: block;
   width: 100%;
@@ -266,7 +244,6 @@ export default {
   left: 0;
 }
 @media (max-width: 992px) {
-  /* product-swiper-setting */
   .swiper-button-next,
   .swiper-button-prev {
     width: 29px;

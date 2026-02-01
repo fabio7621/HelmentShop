@@ -52,9 +52,7 @@
             <div class="article-content">
               <h3>{{ article.title }}</h3>
               <p class="mb-0">
-                {{ article.author }}&nbsp;<span>{{
-                  $filters.date(article.create_at)
-                }}</span>
+                {{ article.author }}&nbsp;<span>{{ formatDate(article.create_at) }}</span>
               </p>
               <div v-html="article.content"></div>
             </div>
@@ -66,33 +64,38 @@
   </section>
 </template>
 
-<script>
-const { VITE_API, VITE_APIPATH } = import.meta.env;
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { useFilters } from "@/composables/useFilters";
 
-export default {
-  data() {
-    return {
-      article: {},
-      id: "",
-    };
-  },
-  methods: {
-    getArticle() {
-      const api = `${VITE_API}api/${VITE_APIPATH}/article/${this.id}`;
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
 
-      this.$http
-        .get(api)
-        .then((response) => {
-          this.article = response.data.article;
-        })
-        .catch((error) => {
-          alert(`取得文章資訊失敗${error.response.data.message}`);
-        });
-    },
-  },
-  created() {
-    this.id = this.$route.params.blogid;
-    this.getArticle();
-  },
-};
+const route = useRoute();
+const { date: formatDate } = useFilters();
+
+const article = ref({});
+
+const blogId = computed(() => route.params.blogid);
+
+function getArticle() {
+  const api = `${VITE_API}api/${VITE_APIPATH}/article/${blogId.value}`;
+  axios
+    .get(api)
+    .then((response) => {
+      article.value = response.data.article;
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "取得文章資訊失敗";
+      alert(message);
+    });
+}
+
+onMounted(() => {
+  getArticle();
+});
 </script>

@@ -20,20 +20,16 @@
   </section>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      randomNumber: null,
-    };
-  },
-  methods: {
-    generateRandomNumber() {
-      this.randomNumber = Math.floor(Math.random() * 2);
-    },
-  },
-};
+<script setup>
+import { ref } from "vue";
+
+const randomNumber = ref(null);
+
+function generateRandomNumber() {
+  randomNumber.value = Math.floor(Math.random() * 2);
+}
 </script>
+
 <style>
 .ticket-box > a > p {
   font-size: 16px;

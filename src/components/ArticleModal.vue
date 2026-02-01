@@ -6,7 +6,7 @@
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
-    ref="modal"
+    ref="modalRef"
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
@@ -150,7 +150,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-article', tempArticle)"
+            @click="handleUpdateArticle"
           >
             確認
           </button>
@@ -160,48 +160,77 @@
   </div>
 </template>
 
-<script>
-import modalMixin from "@/mixins/modalMixin";
+<script setup>
+import { ref, reactive, watch } from "vue";
+import { useModal } from "@/composables/useModal";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-export default {
-  props: {
-    article: Object,
-    isNew: Boolean,
+const props = defineProps({
+  article: {
+    type: Object,
+    default: () => ({}),
   },
-  data() {
-    return {
-      status: {},
-      modal: "",
-      tempArticle: {
-        tag: [""],
-      },
-      create_at: 0,
-      // 參考：https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html#editor
-      editor: ClassicEditor,
-      editorConfig: {
-        toolbar: ["heading", "bold", "italic", "|", "link"],
-      },
-    };
+  isNew: {
+    type: Boolean,
+    default: false,
   },
-  mixins: [modalMixin],
-  watch: {
-    article() {
-      this.tempArticle = {
-        ...this.article,
-        tag: this.article.tag || [],
-        isPublic: this.article.isPublic || false,
-      };
-      [this.create_at] = new Date(this.tempArticle.create_at * 1000)
-        .toISOString()
-        .split("T");
-    },
-    create_at() {
-      this.tempArticle.create_at = Math.floor(new Date(this.create_at) / 1000);
-    },
-  },
-  methods: {},
+});
+
+const emit = defineEmits(["update-article"]);
+
+const modalRef = ref(null);
+const { openModal, hideModal } = useModal(modalRef);
+
+const tempArticle = reactive({
+  tag: [""],
+  title: "",
+  imageUrl: "",
+  author: "",
+  description: "",
+  content: "",
+  isPublic: false,
+  create_at: 0,
+});
+
+const create_at = ref(0);
+
+const editor = ClassicEditor;
+const editorConfig = {
+  toolbar: ["heading", "bold", "italic", "|", "link"],
 };
+
+watch(
+  () => props.article,
+  (newArticle) => {
+    const tag = Array.isArray(newArticle.tag) ? newArticle.tag : [];
+    const isPublic = newArticle.isPublic ? newArticle.isPublic : false;
+    Object.assign(tempArticle, {
+      ...newArticle,
+      tag,
+      isPublic,
+    });
+    if (tempArticle.create_at) {
+      const isoDate = new Date(tempArticle.create_at * 1000).toISOString().split("T");
+      create_at.value = isoDate[0];
+    }
+  },
+  { immediate: true }
+);
+
+watch(create_at, (newDate) => {
+  if (newDate) {
+    tempArticle.create_at = Math.floor(new Date(newDate) / 1000);
+  }
+});
+
+function handleUpdateArticle() {
+  emit("update-article", tempArticle);
+}
+
+defineExpose({
+  openModal,
+  hideModal,
+});
 </script>
 
 <style>

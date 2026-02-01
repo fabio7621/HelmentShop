@@ -47,13 +47,11 @@
             <tfoot>
               <tr>
                 <td></td>
-
                 <td colspan="2" class="text-end">總計</td>
                 <td class="text-end">{{ order.total }}</td>
               </tr>
             </tfoot>
           </table>
-
           <table class="table">
             <tbody>
               <tr>
@@ -90,65 +88,77 @@
   </section>
 </template>
 
-<script>
-import { mapActions } from "pinia";
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
 import { useToastMessageStore } from "@/stores/toastMessage";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
+import Loadingitem from "@/components/Loadingitem.vue";
 
-export default {
-  data() {
-    return {
-      order: {
-        user: {},
-      },
-      orderId: "",
-    };
-  },
-  methods: {
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    getOrder() {
-      const url = `${VITE_API}api/${VITE_APIPATH}/order/${this.orderId}`;
-      this.isLoading = true;
-      this.$http
-        .get(url)
-        .then((response) => {
-          this.order = response.data.order;
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "取得訂單失敗",
-            content: error.response.data.message,
-          });
-        });
-    },
-    payOrder() {
-      const url = `${VITE_API}api/${VITE_APIPATH}/pay/${this.orderId}`;
-      this.isLoading = true;
-      this.$http
-        .post(url)
-        .then(() => {
-          this.isLoading = false;
-          this.getOrder();
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "付款失敗",
-            content: error.response.data.message,
-          });
-        });
-    },
-  },
-  created() {
-    this.orderId = this.$route.params.orderId;
-    this.getOrder();
-  },
-};
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
+
+const route = useRoute();
+const toastStore = useToastMessageStore();
+
+const order = ref({
+  user: {},
+});
+const isLoading = ref(false);
+
+const orderId = computed(() => route.params.orderId);
+
+function getOrder() {
+  const url = `${VITE_API}api/${VITE_APIPATH}/order/${orderId.value}`;
+  isLoading.value = true;
+  axios
+    .get(url)
+    .then((response) => {
+      order.value = response.data.order;
+      isLoading.value = false;
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "取得訂單失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "取得訂單失敗",
+        content: message,
+      });
+    });
+}
+
+function payOrder() {
+  const url = `${VITE_API}api/${VITE_APIPATH}/pay/${orderId.value}`;
+  isLoading.value = true;
+  axios
+    .post(url)
+    .then(() => {
+      isLoading.value = false;
+      getOrder();
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "付款失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "付款失敗",
+        content: message,
+      });
+    });
+}
+
+onMounted(() => {
+  if (orderId.value) {
+    getOrder();
+  }
+});
 </script>
+
 <style scoped>
 .userOrder {
   padding: 1rem;

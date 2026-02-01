@@ -19,12 +19,10 @@
         <button
           type="button"
           class="btn-close"
-          @click="clearToast(key)"
+          @click="handleClearToast(key)"
           aria-label="Close"
         ></button>
-        <!-- 設定key對的位置把message清空 -->
       </div>
-
       <div class="toast-body" v-if="msg.content">
         {{ msg.content }}
       </div>
@@ -32,16 +30,14 @@
   </div>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
+<script setup>
+import { storeToRefs } from "pinia";
 import { useToastMessageStore } from "@/stores/toastMessage";
 
-export default {
-  computed: {
-    ...mapState(useToastMessageStore, ["messages"]),
-  },
-  methods: {
-    ...mapActions(useToastMessageStore, ["clearToast"]),
-  },
-};
+const toastStore = useToastMessageStore();
+const { messages } = storeToRefs(toastStore);
+
+function handleClearToast(index) {
+  toastStore.clearToast(index);
+}
 </script>

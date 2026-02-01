@@ -7,6 +7,23 @@
   </section>
 </template>
 
+<script setup>
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+function redirectToHome() {
+  setTimeout(() => {
+    router.push("/");
+  }, 2000);
+}
+
+onMounted(() => {
+  redirectToHome();
+});
+</script>
+
 <style lang="scss">
 .notfund-wrap {
   padding: 150px 0;
@@ -24,19 +41,3 @@
   }
 }
 </style>
-<script>
-import { useRouter } from "vue-router";
-export default {
-  methods: {
-    redirectToHome() {
-      const router = useRouter();
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    },
-  },
-  mounted() {
-    this.redirectToHome();
-  },
-};
-</script>

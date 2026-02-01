@@ -41,65 +41,59 @@
       <IndexProductCard
         :ogkdata="ogkProducts"
         :is-loading="isLoading"
-      ></IndexProductCard>
+      />
     </div>
   </section>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
 import IndexBanner from "@/components/IndexBanner.vue";
 import IndexProductCard from "@/components/IndexProductCard.vue";
 import Loadingitem from "@/components/Loadingitem.vue";
 import CouponSection from "@/components/CouponSection.vue";
-import { mapActions } from "pinia";
 import { useToastMessageStore } from "@/stores/toastMessage";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
 
-export default {
-  data() {
-    return {
-      ogkProducts: "",
-      isLoading: false,
-    };
-  },
-  methods: {
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    getOgk() {
-      this.isLoading = true;
-      const api = `${VITE_API}api/${VITE_APIPATH}/products?category=ogk`;
-      this.$http(api)
-        .then((res) => {
-          this.ogkProducts = res.data.products;
-          this.isLoading = false;
-        })
-        .catch((err) => {
-          this.isLoading = false;
-          alert(`取得產品資訊失敗${err.response.data.message}`);
-        });
-    },
-  },
-  components: {
-    IndexBanner,
-    IndexProductCard,
-    Loadingitem,
-    CouponSection,
-  },
-  mounted() {
-    this.getOgk();
-    this.pushMessage({
-      style: "success",
-      title: "歡迎光臨",
-      content: `買千送買優惠活動持續中！！`,
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
+
+const ogkProducts = ref("");
+const isLoading = ref(false);
+const toastStore = useToastMessageStore();
+
+function getOgk() {
+  isLoading.value = true;
+  const api = `${VITE_API}api/${VITE_APIPATH}/products?category=ogk`;
+  axios.get(api)
+    .then((res) => {
+      ogkProducts.value = res.data.products;
+      isLoading.value = false;
+    })
+    .catch((err) => {
+      isLoading.value = false;
+      const message = err.response && err.response.data
+        ? err.response.data.message
+        : "取得產品資訊失敗";
+      alert(message);
     });
-  },
-};
+}
+
+onMounted(() => {
+  getOgk();
+  toastStore.pushMessage({
+    style: "success",
+    title: "歡迎光臨",
+    content: "買千送買優惠活動持續中！！",
+  });
+});
 </script>
+
 <style>
 .swiper {
   width: 100%;
   height: 100%;
 }
-
 .swiper-slide {
   text-align: center;
   font-size: 18px;

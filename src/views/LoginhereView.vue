@@ -1,6 +1,6 @@
 <template>
   <section class="login-wrap">
-    <form @submit.prevent="login" class="login-box">
+    <form @submit.prevent="handleLogin" class="login-box">
       <div class="login-pic">
         <img
           class="w-100"
@@ -27,7 +27,7 @@
         />
       </div>
       <button
-        @click="login"
+        @click="handleLogin"
         class="btn btn-lg btn-primary w-100 mt-3"
         type="submit"
       >
@@ -36,46 +36,40 @@
     </form>
   </section>
 </template>
-<script>
-import ToastMessages from "@/components/ToastMessages.vue";
-import { mapActions } from "pinia";
+
+<script setup>
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 import { useToastMessageStore } from "@/stores/toastMessage";
 
-export default {
-  data() {
-    return {
-      apiUrl: "https://vue3-course-api.hexschool.io/v2",
-      user: {
-        username: "",
-        password: "",
-      },
-    };
-  },
-  components: {
-    ToastMessages,
-  },
-  methods: {
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    login() {
-      const api = `${import.meta.env.VITE_API}admin/signin`;
-      this.$http
-        .post(api, this.user)
-        .then((res) => {
-          const { token, expired } = res.data;
-          document.cookie = `fabio20token=${token};expires=${new Date(
-            expired
-          )}; path=/`;
-          this.$router.push("/dashbord");
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "登入失敗",
-            content: error.response.data.message,
-          });
-        });
-    },
-  },
-};
+const router = useRouter();
+const toastStore = useToastMessageStore();
+
+const user = reactive({
+  username: "",
+  password: "",
+});
+
+function handleLogin() {
+  const api = `${import.meta.env.VITE_API}admin/signin`;
+  axios
+    .post(api, user)
+    .then((res) => {
+      const token = res.data.token;
+      const expired = res.data.expired;
+      document.cookie = `fabio20token=${token};expires=${new Date(expired)}; path=/`;
+      router.push("/dashbord");
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "登入失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "登入失敗",
+        content: message,
+      });
+    });
+}
 </script>

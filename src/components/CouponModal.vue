@@ -6,7 +6,7 @@
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
-    ref="modal"
+    ref="modalRef"
   >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -61,7 +61,7 @@
               min="0"
               v-model.number="tempCoupon.percent"
               placeholder="請輸入折扣百分比"
-              @input="restInput()"
+              @input="restInput"
             />
           </div>
           <div class="mb-3">
@@ -91,7 +91,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-coupon', tempCoupon)"
+            @click="handleUpdateCoupon"
           >
             {{ isNew ? "新增優惠卷" : "更新優惠券" }}
           </button>
@@ -101,41 +101,61 @@
   </div>
 </template>
 
-<script>
-import modalMixin from "@/mixins/modalMixin";
+<script setup>
+import { ref, watch } from "vue";
+import { useModal } from "@/composables/useModal";
 
-export default {
-  props: {
-    coupon: Object,
-    isNew: Boolean,
+const props = defineProps({
+  coupon: {
+    type: Object,
+    default: () => ({}),
   },
-  data() {
-    return {
-      tempCoupon: {},
-      due_date: "",
-    };
+  isNew: {
+    type: Boolean,
+    default: false,
   },
-  methods:{
-    restInput() {
-    if (this.tempCoupon.percent <= 0) {
-      this.tempCoupon.percent = 1; 
-    }
-   }
- },
-  emits: ["update-coupon"],
-  watch: {
-    coupon() {
-      this.tempCoupon = this.coupon;
-      // 將時間格式改為 YYYY-MM-DD
-      const dateAndTime = new Date(this.tempCoupon.due_date * 1000)
+});
+
+const emit = defineEmits(["update-coupon"]);
+
+const modalRef = ref(null);
+const { openModal, hideModal } = useModal(modalRef);
+
+const tempCoupon = ref({});
+const due_date = ref("");
+
+watch(
+  () => props.coupon,
+  (newCoupon) => {
+    tempCoupon.value = newCoupon;
+    if (newCoupon.due_date) {
+      const dateAndTime = new Date(newCoupon.due_date * 1000)
         .toISOString()
         .split("T");
-      [this.due_date] = dateAndTime;
-    },
-    due_date() {
-      this.tempCoupon.due_date = Math.floor(new Date(this.due_date) / 1000);
-    },
+      due_date.value = dateAndTime[0];
+    }
   },
-  mixins: [modalMixin],
+  { immediate: true }
+);
+
+watch(due_date, (newDate) => {
+  if (newDate) {
+    tempCoupon.value.due_date = Math.floor(new Date(newDate) / 1000);
+  }
+});
+
+function restInput() {
+  if (tempCoupon.value.percent <= 0) {
+    tempCoupon.value.percent = 1;
+  }
 }
+
+function handleUpdateCoupon() {
+  emit("update-coupon", tempCoupon.value);
+}
+
+defineExpose({
+  openModal,
+  hideModal,
+});
 </script>

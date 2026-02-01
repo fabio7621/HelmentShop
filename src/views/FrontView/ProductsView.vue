@@ -1,6 +1,6 @@
 <template>
-  <VueLoading :active="isLoading" :z-index="1060">
-    <Loadingitem></Loadingitem>
+  <VueLoading :active="combinedLoading" :z-index="1060">
+    <Loadingitem />
   </VueLoading>
   <section class="section-main-banner">
     <img class="d-none d-md-block w-100" src="../../assets/image/productbanner0001.png" alt="banner" />
@@ -48,16 +48,14 @@
             </router-link>
             <h4 class="index-product-title">{{ item.title }}</h4>
             <div class="index-product-price">
-              <span
-                ><del>原價：{{ item.origin_price }}元</del></span
-              >
+              <span><del>原價：{{ item.origin_price }}元</del></span>
               <p>售價：{{ item.price }}元</p>
             </div>
             <div class="product-btns d-flex justify-content-around">
               <router-link :to="`/product/${item.id}`" class="d-block w-50 h-100">
                 <i class="bi bi-search"></i>
               </router-link>
-              <button style="background-color: none; border: none" @click="addToCart(item.id)" class="d-block w-50 h-100" href="">
+              <button style="background-color: none; border: none" @click="handleAddToCart(item.id)" class="d-block w-50 h-100" href="">
                 <i class="bi bi-cart"></i>
               </button>
             </div>
@@ -96,59 +94,63 @@
     </div>
   </section>
 </template>
-<script>
-import { mapActions, mapState } from "pinia";
-import cartStore from "@/stores/cartStore";
-import Pagination from "@/components/Pagination.vue";
-import Loadingitem from "@/components/Loadingitem.vue";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
 
-export default {
-  data() {
-    return {
-      isLoading: false,
-      products: [],
-      pagination: {},
-      categories: ["shoei", "ogk", "arai"],
-    };
+<script setup>
+import { ref, computed, watch, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { useCartStore } from "@/stores/cartStore";
+import Loadingitem from "@/components/Loadingitem.vue";
+
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
+
+const route = useRoute();
+const cartStore = useCartStore();
+
+const isLoading = ref(false);
+const products = ref([]);
+const pagination = ref({});
+const categories = ["shoei", "ogk", "arai"];
+
+const combinedLoading = computed(() => {
+  return isLoading.value || cartStore.isLoading;
+});
+
+function getData(page) {
+  const pageNum = page || 1;
+  const category = route.query.category || "";
+  const api = `${VITE_API}/api/${VITE_APIPATH}/products?category=${category}&page=${pageNum}`;
+  isLoading.value = true;
+  axios
+    .get(api)
+    .then((res) => {
+      products.value = res.data.products;
+      pagination.value = res.data.pagination;
+      isLoading.value = false;
+    })
+    .catch((err) => {
+      const message = err.response && err.response.data
+        ? err.response.data.message
+        : "取得產品資訊失敗";
+      alert(message);
+      isLoading.value = false;
+    });
+}
+
+function handleAddToCart(id) {
+  cartStore.addToCart(id);
+}
+
+watch(
+  () => route.query,
+  () => {
+    getData();
   },
-  methods: {
-    ...mapActions(cartStore, ["addToCart"]),
-    getData(page = 1) {
-      this.isLoading = true;
-      const { category = "" } = this.$route.query;
-      const api = `${VITE_API}/api/${VITE_APIPATH}/products?category=${category}&page=${page}`;
-      this.$http
-        .get(api)
-        .then((res) => {
-          const { products, pagination } = res.data;
-          this.products = products;
-          this.pagination = pagination;
-          this.isLoading = false;
-        })
-        .catch((err) => {
-          alert(`取得產品資訊失敗${err.response.data.message}`);
-          this.isLoading = false;
-        });
-    },
-  },
-  computed: {
-    ...mapState(cartStore, ["isLoading"]),
-  },
-  watch: {
-    "$route.query": {
-      handler() {
-        this.getData();
-      },
-      deep: true,
-    },
-  },
-  components: {
-    Pagination,
-    Loadingitem,
-  },
-  mounted() {
-    this.getData();
-  },
-};
+  { deep: true }
+);
+
+onMounted(() => {
+  getData();
+});
 </script>

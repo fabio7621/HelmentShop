@@ -46,12 +46,10 @@
                 </router-link>
                 <p>
                   {{ item.product.title }}<br />
-                  <span style="font-size: 12px">{{ `單價${item.product.price}元/${item.product.unit}` }}</span
-                  ><br />
+                  <span style="font-size: 12px">{{ `單價${item.product.price}元/${item.product.unit}` }}</span><br />
                   <small class="text-end text-success" v-if="coupon_status">已套用折扣卷</small>
                 </p>
               </td>
-
               <td class="align-middle p-0">
                 <div class="input-group">
                   <div class="form-floating">
@@ -76,20 +74,19 @@
                 </div>
               </td>
               <td class="align-middle text-end">
-                <span>{{ $filters.currency(item.final_total) }}元</span>
+                <span>{{ formatCurrency(item.final_total) }}元</span>
               </td>
             </tr>
           </tbody>
         </table>
-        <button @click="deleteAllCarts()" type="button" class="cleanCartBtn btn ms-auto mt-2">清空購物車</button>
+        <button @click="deleteAllCarts" type="button" class="cleanCartBtn btn ms-auto mt-2">清空購物車</button>
         <div class="checkout-total d-flex flex-row-reverse">
           <div class="checkout-total-price d-flex">
             <p class="text-end text-success" v-if="coupon_status">優惠價</p>
             <p v-else>總金額</p>
-            <span>${{ $filters.currency(final_total) }}元</span>
+            <span>${{ formatCurrency(coupon_status ? final_total : computedTotal) }}元</span>
           </div>
         </div>
-
         <div class="mt-3 mb-5 d-flex justify-content-end">
           <input type="text" class="form-control w-50" v-model="coupon_code" placeholder="請輸入優惠碼" style="max-width: 300px" />
           <div class="input-group-append">
@@ -98,7 +95,7 @@
         </div>
         <div class="section-checkout-order">
           <div class="checkout-order-main">
-            <VeeForm v-slot="{ errors }" @submit="createOrder" ref="form" class="checkout-order-box" action="">
+            <VeeForm v-slot="{ errors }" @submit="createOrder" ref="formRef" class="checkout-order-box" action="">
               <div class="section-order-item">
                 <label class="mb-md-3 mb-3" for="email"><span>＊</span>email </label>
                 <VeeField
@@ -157,7 +154,7 @@
                 <label class="mb-md-3 mb-3" for="">留言</label>
                 <textarea class="w-100 form-control" name="" id="" rows="10" v-model="form.message"></textarea>
               </div>
-              <button @click="createOrder()" class="checkout-pay-order-btn w-100">確認送出</button>
+              <button @click="createOrder" class="checkout-pay-order-btn w-100">確認送出</button>
             </VeeForm>
           </div>
         </div>
@@ -169,133 +166,166 @@
   </section>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
-import cartStore from "@/stores/cartStore";
-import Loadingitem from "@/components/Loadingitem.vue";
+<script setup>
+import { ref, reactive, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import { useCartStore } from "@/stores/cartStore";
 import { useToastMessageStore } from "@/stores/toastMessage";
-const { VITE_API, VITE_APIPATH } = import.meta.env;
+import { useFilters } from "@/composables/useFilters";
+import Loadingitem from "@/components/Loadingitem.vue";
 
-export default {
-  data() {
-    return {
-      isLoading: false,
-      form: {
-        user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: "",
-        },
-        message: "",
-      },
-      coupon_code: "",
-      coupon_status: false,
-    };
+const VITE_API = import.meta.env.VITE_API;
+const VITE_APIPATH = import.meta.env.VITE_APIPATH;
+
+const route = useRoute();
+const router = useRouter();
+const cartStore = useCartStore();
+const toastStore = useToastMessageStore();
+const { currency: formatCurrency } = useFilters();
+
+const formRef = ref(null);
+const isLoading = ref(false);
+const coupon_code = ref("");
+const coupon_status = ref(false);
+
+const form = reactive({
+  user: {
+    name: "",
+    email: "",
+    tel: "",
+    address: "",
   },
-  computed: {
-    ...mapState(cartStore, ["carts", "final_total", "total"]),
-  },
-  methods: {
-    ...mapActions(cartStore, ["getCart"]),
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    restInput(item) {
-      if (item.qty <= 0) {
-        item.qty = 1;
+  message: "",
+});
+
+const carts = computed(() => cartStore.carts);
+const final_total = computed(() => cartStore.final_total);
+const total = computed(() => cartStore.total);
+
+const computedTotal = computed(() => {
+  return carts.value.reduce((sum, item) => sum + item.final_total, 0);
+});
+
+function restInput(item) {
+  if (item.qty <= 0) {
+    item.qty = 1;
+  }
+  item.final_total = item.product.price * item.qty;
+}
+
+function removeCartItem(id) {
+  const api = `${VITE_API}api/${VITE_APIPATH}/cart/${id}`;
+  axios
+    .delete(api)
+    .then(() => {
+      cartStore.getCart();
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "刪除失敗";
+      alert(message);
+    });
+}
+
+function createOrder() {
+  const api = `${VITE_API}api/${VITE_APIPATH}/order`;
+  const order = form;
+  axios
+    .post(api, { data: order })
+    .then((response) => {
+      cartStore.getCart();
+      if (formRef.value) {
+        formRef.value.resetForm();
       }
-    },
-    removeCartItem(id) {
-      const api = `${VITE_API}api/${VITE_APIPATH}/cart/${id}`;
-      this.$http
-        .delete(api)
-        .then((response) => {
-          this.getCart();
-        })
-        .catch((error) => {
-          alert(`${err.response.data.message}`);
-        });
-    },
-    createOrder() {
-      const api = `${VITE_API}api/${VITE_APIPATH}/order`;
-      const order = this.form;
-      this.$http
-        .post(api, { data: order })
-        .then((response) => {
-          this.getCart();
-          this.$refs.form.resetForm();
-          this.$router.push(`/myorder/${response.data.orderId}`);
-        })
-        .catch((error) => {
-          alert(`${err.response.data.message}`);
-        });
-    },
-    updateCart(item) {
-      const api = `${VITE_API}api/${VITE_APIPATH}/cart/${item.id}`;
-      const cart = {
-        product_id: item.product_id,
-        qty: item.qty,
-      };
-      this.$http
-        .put(api, { data: cart })
-        .then((response) => {
-          this.getCart();
-        })
-        .catch((error) => {
-          alert(`更新購物車失敗${err.response.data.message}`);
-        });
-    },
-    addCouponCode() {
-      const api = `${VITE_API}api/${VITE_APIPATH}/coupon`;
-      const coupon = {
-        code: this.coupon_code,
-      };
-      this.isLoading = true;
-      this.$http
-        .post(api, { data: coupon })
-        .then((response) => {
-          this.pushMessage({
-            style: "success",
-            title: "加入優惠券",
-            content: response.data.message,
-          });
-          this.getCart();
-          this.isLoading = false;
-          this.coupon_status = true;
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "加入優惠券",
-            content: error.response.data.message,
-          });
-        });
-    },
-    deleteAllCarts() {
-      this.isLoading = true;
-      const api = `${import.meta.env.VITE_API}api/${import.meta.env.VITE_APIPATH}/carts`;
-      this.$http
-        .delete(api)
-        .then((response) => {
-          this.getCart();
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          alert(`清除購物車${error.response.data.message}`);
-        });
-    },
-  },
-  components: {
-    ...mapState(cartStore, ["carts"]),
-    Loadingitem,
-  },
-  mounted() {
-    this.getCart();
-    this.coupon_code = this.$route.params.couponid;
-  },
-};
+      router.push(`/myorder/${response.data.orderId}`);
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "建立訂單失敗";
+      alert(message);
+    });
+}
+
+function updateCart(item) {
+  const api = `${VITE_API}api/${VITE_APIPATH}/cart/${item.id}`;
+  const cart = {
+    product_id: item.product_id,
+    qty: item.qty,
+  };
+  axios
+    .put(api, { data: cart })
+    .then(() => {
+      cartStore.getCart();
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "更新購物車失敗";
+      alert(message);
+    });
+}
+
+function addCouponCode() {
+  const api = `${VITE_API}api/${VITE_APIPATH}/coupon`;
+  const coupon = {
+    code: coupon_code.value,
+  };
+  isLoading.value = true;
+  axios
+    .post(api, { data: coupon })
+    .then((response) => {
+      toastStore.pushMessage({
+        style: "success",
+        title: "加入優惠券",
+        content: response.data.message,
+      });
+      cartStore.getCart();
+      isLoading.value = false;
+      coupon_status.value = true;
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "加入優惠券失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "加入優惠券",
+        content: message,
+      });
+    });
+}
+
+function deleteAllCarts() {
+  isLoading.value = true;
+  const api = `${VITE_API}api/${VITE_APIPATH}/carts`;
+  axios
+    .delete(api)
+    .then(() => {
+      cartStore.getCart();
+      isLoading.value = false;
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "清除購物車失敗";
+      alert(message);
+    });
+}
+
+onMounted(() => {
+  cartStore.getCart();
+  const couponId = route.params.couponid;
+  if (couponId) {
+    coupon_code.value = couponId;
+  }
+});
 </script>
+
 <style scoped>
 .form-floating > .form-control:focus,
 .form-floating > .form-control:not(:placeholder-shown),

@@ -36,7 +36,7 @@
             >
           </li>
           <li class="nav-item">
-            <a @click.prevent="logout()" class="nav-link">登出</a>
+            <a @click.prevent="handleLogout" class="nav-link">登出</a>
           </li>
         </ul>
       </div>
@@ -44,21 +44,25 @@
   </nav>
 </template>
 
-<script>
-export default {
-  methods: {
-    logout() {
-      const api = `${import.meta.env.VITE_API}logout`;
-      this.$http
-        .post(api)
-        .then(() => {
-          this.$router.push("/");
-          document.cookie = `fabio20=; expires=; path=/`;
-        })
-        .catch((error) => {
-          alert(`${error.response.data.message}`);
-        });
-    },
-  },
-};
+<script setup>
+import { useRouter } from "vue-router";
+import axios from "axios";
+
+const router = useRouter();
+
+function handleLogout() {
+  const api = `${import.meta.env.VITE_API}logout`;
+  axios
+    .post(api)
+    .then(() => {
+      router.push("/");
+      document.cookie = "fabio20=; expires=; path=/";
+    })
+    .catch((error) => {
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "登出失敗";
+      alert(message);
+    });
+}
 </script>

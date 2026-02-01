@@ -1,12 +1,12 @@
 <template>
   <div
-    class="modal fade"
     id="productModal"
+    ref="orderModalRef"
+    class="modal fade"
     tabindex="-1"
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
-    ref="Ordermodal"
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
@@ -56,13 +56,13 @@
                   </tr>
                   <tr>
                     <th>下單時間</th>
-                    <td>{{ $filters.date(tempOrder.create_at) }}</td>
+                    <td>{{ formatDate(tempOrder.create_at) }}</td>
                   </tr>
                   <tr>
                     <th>付款時間</th>
                     <td>
                       <span v-if="tempOrder.paid_date">
-                        {{ $filters.date(tempOrder.paid_date) }}
+                        {{ formatDate(tempOrder.paid_date) }}
                       </span>
                       <span v-else>時間不正確</span>
                     </td>
@@ -79,7 +79,7 @@
                   <tr>
                     <th>總金額</th>
                     <td>
-                      {{ $filters.currency(tempOrder.total) }}
+                      {{ formatCurrency(tempOrder.total) }}
                     </td>
                   </tr>
                 </tbody>
@@ -96,7 +96,7 @@
                     </th>
                     <td>{{ item.qty }} / {{ item.product.unit }}</td>
                     <td class="text-end">
-                      {{ $filters.currency(item.final_total) }}
+                      {{ formatCurrency(item.final_total) }}
                     </td>
                   </tr>
                 </tbody>
@@ -130,9 +130,8 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="$emit('update-paid', tempOrder)"
+            @click="handleUpdatePaid"
           >
-            <!-- 把裡面資料丟出去給外層 -->
             修改付款狀態
           </button>
         </div>
@@ -141,34 +140,60 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, watch, onMounted } from "vue";
 import { Modal } from "bootstrap";
-export default {
-  data() {
-    return {
-      orderM: null,
-      tempOrder: {},
-    };
-  },
-  props: ["order"],
-  emits: ["update-paid"],
-  methods: {
-    openOderModal() {
-      this.orderM.show();
-    },
-    closeOderModal() {
-      this.orderM.hide();
-    },
-  },
-  watch: {
-    order() {
-      this.tempOrder = this.order; //避免單向數據流利用watch去跟改監控
-    },
-  },
-  mounted() {
-    this.orderM = new Modal(this.$refs.Ordermodal);
-  },
-};
-</script>
+import { useFilters } from "@/composables/useFilters";
 
-<style></style>
+const props = defineProps({
+  order: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
+const emit = defineEmits(["update-paid"]);
+
+const { date: formatDate, currency: formatCurrency } = useFilters();
+
+const orderModalRef = ref(null);
+const orderModalInstance = ref(null);
+const tempOrder = ref({});
+
+watch(
+  () => props.order,
+  (newOrder) => {
+    tempOrder.value = newOrder;
+  },
+  { immediate: true }
+);
+
+function openOderModal() {
+  if (orderModalInstance.value) {
+    orderModalInstance.value.show();
+  }
+}
+
+function closeOderModal() {
+  if (orderModalInstance.value) {
+    orderModalInstance.value.hide();
+  }
+}
+
+function handleUpdatePaid() {
+  emit("update-paid", tempOrder.value);
+}
+
+function initModal() {
+  if (orderModalRef.value) {
+    orderModalInstance.value = new Modal(orderModalRef.value);
+  }
+}
+
+defineExpose({
+  openOderModal,
+  closeOderModal,
+});
+
+onMounted(initModal);
+</script>

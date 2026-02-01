@@ -1,7 +1,7 @@
 <template>
   <div
     id="productModal"
-    ref="productModal"
+    ref="productModalRef"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="productModalLabel"
@@ -54,8 +54,8 @@
                   type="file"
                   id="customFile"
                   class="form-control"
-                  ref="fileInput"
-                  @change="uploadFile"
+                  ref="fileInputRef"
+                  @change="handleUploadFile"
                 />
               </div>
               <div v-if="Array.isArray(product.imagesUrl)">
@@ -102,7 +102,6 @@
                   </button>
                 </div>
               </div>
-             
             </div>
             <div class="col-sm-8">
               <div class="form-group mb-3">
@@ -115,7 +114,6 @@
                   placeholder="請輸入標題"
                 />
               </div>
-
               <div class="row mb-3">
                 <div class="form-group col-md-6">
                   <label for="category" class="form-label">分類</label>
@@ -138,7 +136,6 @@
                   />
                 </div>
               </div>
-
               <div class="row mb-3">
                 <div class="form-group col-md-6">
                   <label for="origin_price" class="form-label">原價</label>
@@ -164,7 +161,6 @@
                 </div>
               </div>
               <hr />
-
               <div class="form-group mb-3">
                 <label for="description" class="form-label">產品描述</label>
                 <textarea
@@ -213,7 +209,7 @@
           >
             取消
           </button>
-          <button type="button" class="btn btn-primary" @click="updateProduct">
+          <button type="button" class="btn btn-primary" @click="handleUpdateProduct">
             確認
           </button>
         </div>
@@ -222,93 +218,127 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, reactive, onMounted } from "vue";
 import { Modal } from "bootstrap";
-import { mapActions } from "pinia";
+import axios from "axios";
 import { useToastMessageStore } from "@/stores/toastMessage";
-export default {
-  data() {
-    return {
-      pModal: null,
-      isLoading: false,
-      tempProduct: {},
-      status: {
-        fileUploading: false,
-      },
-    };
-  },
-  props: ["product", "isNew"], //註記不要再data裡面放跟props一樣的名子
-  methods: {
-    ...mapActions(useToastMessageStore, ["pushMessage"]),
-    openM() {
-      this.pModal.show();
-    },
-    closeM() {
-      this.pModal.hide();
-    },
-    updateProduct() {
-      const url = this.isNew
-        ? `${import.meta.env.VITE_API}/api/${
-            import.meta.env.VITE_APIPATH
-          }/admin/product`
-        : `${import.meta.env.VITE_API}/api/${
-            import.meta.env.VITE_APIPATH
-          }/admin/product/${this.product.id}`;
 
-      const httpMethod = this.isNew ? "post" : "put";
-      this.isLoading = true;
-      this.$http[httpMethod](url, { data: this.product })
-        .then((res) => {
-          alert(res.data.message);
-          this.isLoading = false;
-          this.closeM();
-          this.$emit("update");
-        })
-        .catch((error) => {
-          alert(error.res.data.message);
-          this.isLoading = false;
-        });
-    },
-    newImages() {
-      this.product.imagesUrl = [];
-      this.product.imagesUrl.push("");
-    },
-    uploadFile() {
-      const uploadedFile = this.$refs.fileInput.files[0];
-      const formData = new FormData();
-      formData.append("file-to-upload", uploadedFile);
-      const url = `${import.meta.env.VITE_API}api/${
-        import.meta.env.VITE_APIPATH
-      }/admin/upload`;
-      this.status.fileUploading = true;
-      this.$http
-        .post(url, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          this.status.fileUploading = false;
-          this.tempProduct.imageUrl = response.data.imageUrl;
-          this.$refs.fileInput.value = "";
-          this.pushMessage({
-            style: "success",
-            title: "圖片上傳結果",
-            content: response.data.message,
-          });
-        })
-        .catch((error) => {
-          this.status.fileUploading = false;
-          this.pushMessage({
-            style: "danger",
-            title: "圖片上傳結果",
-            content: error.response.data.message,
-          });
-        });
-    },
+const props = defineProps({
+  product: {
+    type: Object,
+    default: () => ({}),
   },
-  mounted() {
-    this.pModal = new Modal(this.$refs.productModal);
+  isNew: {
+    type: Boolean,
+    default: false,
   },
-};
+});
+
+const emit = defineEmits(["update"]);
+
+const productModalRef = ref(null);
+const fileInputRef = ref(null);
+const modalInstance = ref(null);
+const isLoading = ref(false);
+
+const status = reactive({
+  fileUploading: false,
+});
+
+const toastStore = useToastMessageStore();
+
+function openM() {
+  if (modalInstance.value) {
+    modalInstance.value.show();
+  }
+}
+
+function closeM() {
+  if (modalInstance.value) {
+    modalInstance.value.hide();
+  }
+}
+
+function handleUpdateProduct() {
+  const baseUrl = `${import.meta.env.VITE_API}/api/${import.meta.env.VITE_APIPATH}`;
+  const url = props.isNew
+    ? `${baseUrl}/admin/product`
+    : `${baseUrl}/admin/product/${props.product.id}`;
+  const httpMethod = props.isNew ? "post" : "put";
+
+  isLoading.value = true;
+  axios[httpMethod](url, { data: props.product })
+    .then((response) => {
+      alert(response.data.message);
+      isLoading.value = false;
+      closeM();
+      emit("update");
+    })
+    .catch((error) => {
+      isLoading.value = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "操作失敗";
+      alert(message);
+    });
+}
+
+function newImages() {
+  props.product.imagesUrl = [];
+  props.product.imagesUrl.push("");
+}
+
+function handleUploadFile() {
+  const uploadedFile = fileInputRef.value ? fileInputRef.value.files[0] : null;
+  if (!uploadedFile) return;
+
+  const formData = new FormData();
+  formData.append("file-to-upload", uploadedFile);
+  const url = `${import.meta.env.VITE_API}api/${import.meta.env.VITE_APIPATH}/admin/upload`;
+
+  status.fileUploading = true;
+  axios
+    .post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      status.fileUploading = false;
+      props.product.imageUrl = response.data.imageUrl;
+      if (fileInputRef.value) {
+        fileInputRef.value.value = "";
+      }
+      toastStore.pushMessage({
+        style: "success",
+        title: "圖片上傳結果",
+        content: response.data.message,
+      });
+    })
+    .catch((error) => {
+      status.fileUploading = false;
+      const message = error.response && error.response.data
+        ? error.response.data.message
+        : "上傳失敗";
+      toastStore.pushMessage({
+        style: "danger",
+        title: "圖片上傳結果",
+        content: message,
+      });
+    });
+}
+
+function initModal() {
+  if (productModalRef.value) {
+    modalInstance.value = new Modal(productModalRef.value);
+  }
+}
+
+defineExpose({
+  openM,
+  closeM,
+});
+
+onMounted(initModal);
 </script>

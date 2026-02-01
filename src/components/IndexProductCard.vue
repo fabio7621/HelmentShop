@@ -43,28 +43,22 @@
   </swiper>
 </template>
 
-<script>
-// Import Swiper Vue.js components
+<script setup>
 import { Swiper, SwiperSlide } from "swiper/vue";
-
-// Import Swiper styles
 import "swiper/css";
-
 import "swiper/css/pagination";
-
-// import required modules
 import { Pagination } from "swiper/modules";
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide,
+defineProps({
+  ogkdata: {
+    type: Array,
+    default: () => [],
   },
-  props: ["ogkdata", "isLoading"],
-  setup() {
-    return {
-      modules: [Pagination],
-    };
+  isLoading: {
+    type: Boolean,
+    default: false,
   },
-};
+});
+
+const modules = [Pagination];
 </script>

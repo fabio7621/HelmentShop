@@ -1,7 +1,7 @@
 <template>
   <div
     id="delProductModal"
-    ref="modal"
+    ref="modalRef"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="delProductModalLabel"
@@ -36,7 +36,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="$emit('del-item')"
+            @click="handleDelItem"
           >
             確認刪除
           </button>
@@ -46,14 +46,28 @@
   </div>
 </template>
 
-<script>
-import modalMixin from "@/mixins/modalMixin";
+<script setup>
+import { ref } from "vue";
+import { useModal } from "@/composables/useModal";
 
-export default {
-  props: ["item"],
-  mixins: [modalMixin],
-  emits: ["del-item"],
-};
+const props = defineProps({
+  item: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
+const emit = defineEmits(["del-item"]);
+
+const modalRef = ref(null);
+const { openModal, hideModal } = useModal(modalRef);
+
+function handleDelItem() {
+  emit("del-item");
+}
+
+defineExpose({
+  openModal,
+  hideModal,
+});
 </script>
-
-<style></style>

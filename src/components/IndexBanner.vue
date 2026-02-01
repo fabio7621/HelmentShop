@@ -35,30 +35,15 @@
   </section>
 </template>
 
-<script>
-// Import Swiper Vue.js components
+<script setup>
 import { Swiper, SwiperSlide } from "swiper/vue";
-
-// Import Swiper styles
 import "swiper/css";
-
 import "swiper/css/pagination";
-
-// import required modules
 import { Pagination } from "swiper/modules";
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
-  setup() {
-    return {
-      modules: [Pagination],
-    };
-  },
-};
+const modules = [Pagination];
 </script>
+
 <style lang="scss">
 .swiper-pagination-bullet {
   width: 24px;
