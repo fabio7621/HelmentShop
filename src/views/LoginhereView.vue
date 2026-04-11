@@ -59,6 +59,12 @@ function handleLogin() {
       const token = res.data.token;
       const expired = res.data.expired;
       document.cookie = `fabio20token=${token};expires=${new Date(expired)}; path=/`;
+      axios.defaults.headers.common.Authorization = token;
+      toastStore.pushMessage({
+        style: "success",
+        title: "登入成功",
+        content: res.data.message || "歡迎回來",
+      });
       router.push("/dashbord");
     })
     .catch((error) => {
