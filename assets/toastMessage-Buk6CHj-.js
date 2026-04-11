@@ -1,0 +1,1 @@
+import{J as a}from"./index-dNlaO18x.js";const c=a("toastMessage",{state:()=>({messages:[]}),actions:{toastShow(){setTimeout(()=>{this.messages.shift()},6e3)},clearToast(s){this.messages.splice(s,1)},pushMessage(s){const t=s.style||"success",e=s.title,o=s.content;this.messages.push({style:t,title:e,content:o}),this.toastShow()}}});export{c as u};
