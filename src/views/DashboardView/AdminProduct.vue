@@ -50,15 +50,15 @@
     </table>
     <Pagination :pages="pagination" @emit-pages="getData" />
     <ProductModal
-      ref="productboxRef"
-      :product="catchProduct"
+      ref="productModalRef"
+      :product="tempProduct"
       :is-new="isNew"
       @update="getData"
     />
     <DelModal
       @del-item="delProduct"
-      ref="delboxRef"
-      :item="catchProduct"
+      ref="delModalRef"
+      :item="tempProduct"
     />
   </div>
 </template>
@@ -75,11 +75,11 @@ const VITE_API = import.meta.env.VITE_API;
 const VITE_APIPATH = import.meta.env.VITE_APIPATH;
 
 const toastStore = useToastMessageStore();
-const productboxRef = ref(null);
-const delboxRef = ref(null);
+const productModalRef = ref(null);
+const delModalRef = ref(null);
 
 const products = ref([]);
-const catchProduct = reactive({
+const tempProduct = reactive({
   imagesUrl: [],
 });
 const isNew = ref(false);
@@ -117,28 +117,28 @@ function getData(page) {
 
 function openModal(mode, item) {
   if (mode === "new") {
-    catchProduct.imagesUrl = [];
-    Object.assign(catchProduct, { imagesUrl: [] });
+    tempProduct.imagesUrl = [];
+    Object.assign(tempProduct, { imagesUrl: [] });
     isNew.value = true;
-    productboxRef.value.openM();
+    productModalRef.value.openModal();
   } else if (mode === "edit" && item) {
-    Object.assign(catchProduct, { ...item });
+    Object.assign(tempProduct, { ...item });
     isNew.value = false;
-    productboxRef.value.openM();
+    productModalRef.value.openModal();
   }
 }
 
 function openDelModal(item) {
-  Object.assign(catchProduct, { ...item });
-  delboxRef.value.openModal();
+  Object.assign(tempProduct, { ...item });
+  delModalRef.value.openModal();
 }
 
 function delProduct() {
-  const api = `${VITE_API}api/${VITE_APIPATH}/admin/product/${catchProduct.id}`;
+  const api = `${VITE_API}api/${VITE_APIPATH}/admin/product/${tempProduct.id}`;
   axios
     .delete(api)
     .then(() => {
-      delboxRef.value.hideModal();
+      delModalRef.value.hideModal();
       getData();
     })
     .catch((err) => {

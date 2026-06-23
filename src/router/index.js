@@ -66,27 +66,27 @@ const router = createRouter({
       name: "login",
       component: () => import("../views/LoginhereView.vue"),
     },
-    // ========== 後台 (AdminDashBord 佈局) ==========
+    // ========== 後台 (AdminDashboard 佈局) ==========
     {
-      path: "/dashbord",
-      component: () => import("../views/DashBordView/AdminDashBord.vue"),
-      redirect: "/dashbord/product",
+      path: "/dashboard",
+      component: () => import("../views/DashboardView/AdminDashboard.vue"),
+      redirect: "/dashboard/product",
       children: [
         {
           path: "product",
-          component: () => import("../views/DashBordView/AdminProduct.vue"),
+          component: () => import("../views/DashboardView/AdminProduct.vue"),
         },
         {
           path: "order",
-          component: () => import("../views/DashBordView/AdminOder.vue"),
+          component: () => import("../views/DashboardView/AdminOrder.vue"),
         },
         {
           path: "coupons",
-          component: () => import("../views/DashBordView/CouponsView.vue"),
+          component: () => import("../views/DashboardView/CouponsView.vue"),
         },
         {
           path: "article",
-          component: () => import("../views/DashBordView/AdminArticle.vue"),
+          component: () => import("../views/DashboardView/AdminArticle.vue"),
         },
       ],
     },

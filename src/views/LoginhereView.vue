@@ -65,7 +65,7 @@ function handleLogin() {
         title: "登入成功",
         content: res.data.message || "歡迎回來",
       });
-      router.push("/dashbord");
+      router.push("/dashboard");
     })
     .catch((error) => {
       const message = error.response && error.response.data

@@ -248,13 +248,13 @@ const status = reactive({
 
 const toastStore = useToastMessageStore();
 
-function openM() {
+function openModal() {
   if (modalInstance.value) {
     modalInstance.value.show();
   }
 }
 
-function closeM() {
+function closeModal() {
   if (modalInstance.value) {
     modalInstance.value.hide();
   }
@@ -272,7 +272,7 @@ function handleUpdateProduct() {
     .then((response) => {
       alert(response.data.message);
       isLoading.value = false;
-      closeM();
+      closeModal();
       emit("update");
     })
     .catch((error) => {
@@ -336,8 +336,8 @@ function initModal() {
 }
 
 defineExpose({
-  openM,
-  closeM,
+  openModal,
+  closeModal,
 });
 
 onMounted(initModal);

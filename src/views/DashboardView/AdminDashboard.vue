@@ -49,10 +49,10 @@ const toastStore = useToastMessageStore();
 const checkSuccess = ref(false);
 
 const pageTitleMap = {
-  "/dashbord/product": "產品管理",
-  "/dashbord/order": "訂單管理",
-  "/dashbord/coupons": "優惠券管理",
-  "/dashbord/article": "文章管理",
+  "/dashboard/product": "產品管理",
+  "/dashboard/order": "訂單管理",
+  "/dashboard/coupons": "優惠券管理",
+  "/dashboard/article": "文章管理",
 };
 
 const currentPageTitle = computed(() => pageTitleMap[route.path] || "後台儀表板");

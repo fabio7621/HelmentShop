@@ -66,12 +66,12 @@
     </table>
     <OrderModal
       :order="tempOrder"
-      ref="ordermodalRef"
+      ref="orderModalRef"
       @update-paid="updatePaid"
     />
     <DelModal
       @del-item="delOrder"
-      ref="delboxRef"
+      ref="delModalRef"
       :item="tempOrder"
     />
     <Pagination :pages="pagination" @emit-pages="getOrder" />
@@ -92,8 +92,8 @@ const VITE_APIPATH = import.meta.env.VITE_APIPATH;
 
 const toastStore = useToastMessageStore();
 const { date: formatDate } = useFilters();
-const ordermodalRef = ref(null);
-const delboxRef = ref(null);
+const orderModalRef = ref(null);
+const delModalRef = ref(null);
 
 const orders = ref([]);
 const tempOrder = ref({});
@@ -126,12 +126,12 @@ function getOrder(currentPage) {
 
 function openModal(item) {
   tempOrder.value = { ...item };
-  ordermodalRef.value.openOderModal();
+  orderModalRef.value.openOrderModal();
 }
 
 function openDelOrderModal(item) {
   tempOrder.value = { ...item };
-  delboxRef.value.openModal();
+  delModalRef.value.openModal();
 }
 
 function delOrder() {
@@ -139,7 +139,7 @@ function delOrder() {
   axios
     .delete(url)
     .then(() => {
-      delboxRef.value.hideModal();
+      delModalRef.value.hideModal();
       getOrder();
     });
 }
@@ -154,7 +154,7 @@ function updatePaid(item) {
     .put(api, { data: paid })
     .then((response) => {
       isLoading.value = false;
-      ordermodalRef.value.closeOderModal();
+      orderModalRef.value.closeOrderModal();
       toastStore.pushMessage({
         style: "success",
         title: "更新付款狀態",

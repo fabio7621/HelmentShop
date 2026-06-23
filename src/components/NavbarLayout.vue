@@ -39,10 +39,10 @@ const router = useRouter();
 const isCollapsed = ref(false);
 
 const navItems = [
-  { to: "/dashbord/product", label: "產品管理", icon: "bi-box-seam" },
-  { to: "/dashbord/order", label: "訂單管理", icon: "bi-receipt" },
-  { to: "/dashbord/coupons", label: "優惠券", icon: "bi-ticket-perforated" },
-  { to: "/dashbord/article", label: "文章貼文", icon: "bi-file-earmark-text" },
+  { to: "/dashboard/product", label: "產品管理", icon: "bi-box-seam" },
+  { to: "/dashboard/order", label: "訂單管理", icon: "bi-receipt" },
+  { to: "/dashboard/coupons", label: "優惠券", icon: "bi-ticket-perforated" },
+  { to: "/dashboard/article", label: "文章貼文", icon: "bi-file-earmark-text" },
 ];
 
 function handleLogout() {

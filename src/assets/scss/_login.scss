@@ -1,9 +1,9 @@
 .login-wrap {
-  background-image: url(../assets/image/loginBg.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  padding-top: 90px;
-  height: 100vh;
+  background-image: url(../image/loginBg.jpg);
+  background-size: 100% 100%;
+  background-repeat: repeat;
+  padding: 30px 0;
+  height: auto;
 }
 .login-box {
   width: 29%;

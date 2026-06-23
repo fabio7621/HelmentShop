@@ -130,15 +130,15 @@ function getCoupons(page) {
 function updateCoupon(updatedCoupon) {
   let api = `${VITE_API}api/${VITE_APIPATH}/admin/coupon`;
   let httpMethod = "post";
-  let data = updatedCoupon;
+  let payload = updatedCoupon;
 
   if (!isNew.value) {
     api = `${VITE_API}api/${VITE_APIPATH}/admin/coupon/${tempCoupon.value.id}`;
     httpMethod = "put";
-    data = tempCoupon.value;
+    payload = tempCoupon.value;
   }
 
-  axios[httpMethod](api, { data })
+  axios[httpMethod](api, { data: payload })
     .then((response) => {
       isLoading.value = false;
       toastStore.pushMessage({

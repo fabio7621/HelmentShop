@@ -168,13 +168,13 @@ watch(
   { immediate: true }
 );
 
-function openOderModal() {
+function openOrderModal() {
   if (orderModalInstance.value) {
     orderModalInstance.value.show();
   }
 }
 
-function closeOderModal() {
+function closeOrderModal() {
   if (orderModalInstance.value) {
     orderModalInstance.value.hide();
   }
@@ -191,8 +191,8 @@ function initModal() {
 }
 
 defineExpose({
-  openOderModal,
-  closeOderModal,
+  openOrderModal,
+  closeOrderModal,
 });
 
 onMounted(initModal);
