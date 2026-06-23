@@ -1,1 +1,0 @@
-import{o as s,b as n,I as a,a as c,d as o}from"./index-dNlaO18x.js";const r={class:"notfund-wrap"},u=o("div",{class:"notfund-main"},[o("h1",null,"404"),o("p",null,"請輸入正確網址")],-1),_=[u],m={__name:"NotFound",setup(d){const e=a();function t(){setTimeout(()=>{e.push("/")},2e3)}return s(()=>{t()}),(i,l)=>(c(),n("section",r,_))}};export{m as default};

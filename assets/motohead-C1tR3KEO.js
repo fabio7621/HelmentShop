@@ -1,0 +1,1 @@
+var e=`/HelmentShop/assets/motohead-BO50xpAN.png`;export{e as t};

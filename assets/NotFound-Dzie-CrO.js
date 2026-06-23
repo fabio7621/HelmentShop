@@ -1,0 +1,1 @@
+import{C as e,D as t,a as n,h as r,k as i,v as a}from"./index-GecNPAuj.js";e();var o={class:`notfund-wrap`},s=[r(`div`,{class:`notfund-main`},[r(`h1`,null,`404`),r(`p`,null,`請輸入正確網址`)],-1)],c={__name:`NotFound`,setup(e){let r=n();function c(){setTimeout(()=>{r.push(`/`)},2e3)}return t(()=>{c()}),(e,t)=>(i(),a(`section`,o,s))}};export{c as default};

@@ -1,0 +1,1 @@
+import{s as e}from"./index-GecNPAuj.js";var t=e(`toastMessage`,{state:()=>({messages:[]}),actions:{toastShow(){setTimeout(()=>{this.messages.shift()},6e3)},clearToast(e){this.messages.splice(e,1)},pushMessage(e){let t=e.style||`success`,n=e.title,r=e.content;this.messages.push({style:t,title:n,content:r}),this.toastShow()}}});export{t};
