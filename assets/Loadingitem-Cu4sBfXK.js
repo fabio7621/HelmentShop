@@ -1,0 +1,1 @@
+import{C as e,h as t,k as n,o as r,v as i}from"./index-C40HhxXH.js";e();var a={},o={class:`loading-wrap`};function s(e,r){return n(),i(`div`,o,[...r[0]||=[t(`div`,{class:`loading-pic`},[t(`img`,{class:`w-100`,src:`/HelmentShop/assets/loading-pic-DPla5Kis.gif`,alt:`loading`})],-1)]])}var c=r(a,[[`render`,s],[`__scopeId`,`data-v-1a83614a`]]);export{c as t};

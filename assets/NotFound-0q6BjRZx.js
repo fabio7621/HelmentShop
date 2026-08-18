@@ -1,0 +1,1 @@
+import{C as e,D as t,a as n,h as r,k as i,v as a}from"./index-C40HhxXH.js";e();var o={class:`notfund-wrap`},s={__name:`NotFound`,setup(e){let s=n();function c(){setTimeout(()=>{s.push(`/`)},2e3)}return t(()=>{c()}),(e,t)=>(i(),a(`section`,o,[...t[0]||=[r(`div`,{class:`notfund-main`},[r(`h1`,null,`404`),r(`p`,null,`請輸入正確網址`)],-1)]]))}};export{s as default};

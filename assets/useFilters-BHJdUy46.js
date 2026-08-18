@@ -1,1 +1,0 @@
-import{n as e,t}from"./index-GecNPAuj.js";function n(){return{date:e,currency:t}}export{n as t};
