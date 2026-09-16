@@ -1,0 +1,1 @@
+import{a as e}from"./index-CEi00NH-.js";var t=e(`toastMessage`,{state:()=>({messages:[]}),actions:{clearToast(e){this.messages.splice(e,1)},pushMessage(e){this.messages.push({style:`success`,...e}),setTimeout(()=>this.messages.shift(),6e3)}}});export{t};

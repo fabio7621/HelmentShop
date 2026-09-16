@@ -1,0 +1,1 @@
+import{E as e,O as t,S as n,_ as r,m as i,r as a}from"./index-CEi00NH-.js";n();var o={class:`notfund-wrap`},s={__name:`NotFound`,setup(n){let s=a();function c(){setTimeout(()=>{s.push(`/`)},2e3)}return e(()=>{c()}),(e,n)=>(t(),r(`section`,o,[...n[0]||=[i(`div`,{class:`notfund-main`},[i(`h1`,null,`404`),i(`p`,null,`請輸入正確網址`)],-1)]]))}};export{s as default};

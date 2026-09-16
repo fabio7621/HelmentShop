@@ -1,0 +1,1 @@
+function e(e){return(parseInt(e,10)||0).toLocaleString(`en-US`)}function t(e){if(!e)return``;let t=new Date(e*1e3);return isNaN(t.getTime())?``:t.toLocaleDateString()}export{t as n,e as t};

@@ -1,0 +1,1 @@
+import{O as e,S as t,_ as n,i as r,m as i}from"./index-CEi00NH-.js";t();var a={},o={class:`loading-wrap`};function s(t,r){return e(),n(`div`,o,[...r[0]||=[i(`div`,{class:`loading-pic`},[i(`img`,{class:`w-100`,src:`/HelmentShop/assets/loading-pic-DPla5Kis.gif`,alt:`loading`})],-1)]])}var c=r(a,[[`render`,s],[`__scopeId`,`data-v-0b1147f4`]]);export{c as t};

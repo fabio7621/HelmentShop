@@ -1,1 +1,0 @@
-import{n as e,t}from"./index-C40HhxXH.js";function n(){return{date:e,currency:t}}export{n as t};
